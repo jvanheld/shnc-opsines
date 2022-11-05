@@ -1,0 +1,1221 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="course.css" media="screen,projection,print" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>L2 - BI4U2 - Bioinformatique appliquée - Concepts</title>
+
+  </head>
+  <body>
+    
+    <h1>L2 - BI4U2 - Bioinformatique appliquée
+      <br>Définition des concepts</h1>
+
+
+    <a name='contenu'></a>
+    <h2>Table des matières</h2>
+    <ul>
+      <li><a href='#matrices_substitutions'>Matrices de substitution</a></li>
+      <ul>
+	<li><a href='#lod'>LOD scores</a></li>
+	<li><a href='#blosum'>Matrices BLOSUM</a></li>
+	<li><a href='#choix_matrice'>Comment choisir la bonne matrice de substitution pour réaliser un alignement&nbsp;?</a></li>
+      </ul>
+      <li><a href='#dot_plot'>Dot plot</a></li>
+
+      <li><a href='#pairwise_align'>Alignements par paires</a></li>
+      <ul>
+	<li><a href='#gaps'>Les gaps</a></li>
+	<li><a href='#score_alignement'>Comment calculer le score brut d'un alignement&nbsp;?</a></li>
+	<li><a href='#scores_derives'>Scores dérivés d'un alignement&nbsp; par paires</a></li>
+      </ul>
+
+      <li><a href='#global_local'>Alignement global versus local</a></li>
+
+      <li><a href='#blast'>BLAST: une famille d'outils pour la recherche de séquences par similarités</a></li>
+      <ul>
+	<li><a href='#blast_modes'>Les modalités de BLAST</a></li>
+      </ul>
+      <li><a href='#error_types'>Les différents types d'erreurs de prédiction</a></li>
+      <li><a href='#evalue'>Comment interpréter une e-valeur ("expect")&nbsp;?</a></li>
+
+      <li><a href='#alignements_multiples'>Alignements multiples</a>
+	<ul>
+	  <li><a href='#matrice_distance'>Matrice de distance</a></li>
+	  <li><a href='#arbre_guide'>Arbre-guide</a></li>
+	  <li><a href='#alignement_progressif'>Alignement progressif</a></li>
+	</ul>
+      </li>
+
+      <li><a href='#motifs'>Motifs dans les séquences</a>
+	<ul>
+	  <li><a href='#consensus'>Consensus</a></li>
+	  <li><a href='#regexp'>Expressions régulières</a></li>
+	</ul>
+      </li>
+
+      <li><a href='#phylogenie'>Phylogénie moléculaire</a>
+	<ul>
+	  <li><a href='#evenements'>Evénements évolutifs</a></li>
+	  <li><a href='#arbres'>Arbres phylogéniques</a></li>
+	  <li><a href='#distances_sur_arbres'>Estimation des distances
+	      sur base d'un arbre phylogéntique</a></li>
+	  <li><a href='#bootstrap'>Bootstrap</a></li>
+	  <li><a href='#algos_arbres'>Relations entre algorithmes d'inférence phylogénique et arbres</li>
+	</ul>
+      </li>
+
+    </ul>
+
+
+    <a name='matrices_substitutions'></a>
+    <hr><h2>Matrices de substitution</h2>
+
+    <p>Une matrice de substitution associe un score à chaque paire de
+      résidus. Ce score (appelé <span class='concept'>log-odds</span>
+      ou <span class='concept'>lod score</span>) indique la
+      vraisemblance qu'a cette paire de résidus de se retrouver dans
+      une alignement de séquences homologues.
+    </p>
+
+
+    <p>En termes évolutifs, le lod-score peut être interprété comme
+      une indication de l'<i>acceptabilité</i> de la substitution. Ce
+      concept d'acceptabilité a été proposé par Margret Dayhoff en
+      1978, sur base de l'analyse d'une collection d'alignements de
+      séquences protéiques. L'idée sous-jacente est que certaines
+      substitutions ont de plus fortes chances de perturber la
+      fonction de la protéine. </p>
+
+    <p>Par exemple:
+      <ul>
+	<li>le remplacement d'un résidu hydrophobe par un résidu
+	  polaire pourrait modifier le reploiement de la protéine, ou
+	  perturber son interaction avec les membranes;</li>
+	<li>une substitution entre résidus dont les radicaux ont des
+	  tailles différentes peut provoquer un encombrement stérique;</li>
+	<li>le remplacement d'une cystéine par un autre acide aminé
+	  peut éliminer un pont disulfide et perturber ainsi la
+	  structure tertiaire ou quaternaire.</li>
+      </ul>
+    </p>
+
+    <p>En analysant une collection d'alignements entre paires de
+      protéines homologues, Margret Dayhoff réalise que certaines
+      paires de résidus se retrouvent plus fréquemment alignées que ce
+      qu'on s'attendrait à observer au hasard. Elle définit le
+      lod-score, qui mesure cette propriété.</p>
+
+    <a name='lod'></a><h3>LOD-score (log-odds)</h3>
+
+
+    <p>Le log-odds score est le logarithme de vraisemblance de trouver
+      une substitution au sein d'un alignement entre séquences
+      homologues.
+    </p>
+
+    <p class='tips'>Illustrations: voir diapos</p>
+
+
+    <p class='formula'>s<sub>i,j</sub> = s<sub>j,i</sub> 
+      = log<sub>2</sub>(f<sub>i,j</sub>/(f<sub>i</sub>f<sub>j</sub>))</p>
+
+    <ul>
+      <li><span class='formula'>f<sub>i,j</sub></span>:
+	fréquence d'alignement des
+	résidus <span class='formula'>i</span>
+	et <span class='formula'>j</span> au sein d'une
+	collection de référence;</li>
+
+      <li>la <span class='concept'>fréquence
+	  relative observée</span> <span class='formula'>f<sub>i,j</sub></span>,
+	se calcule en divisant le comptage des
+	substitutions <span
+			 class='formula'>n<sub>i,j</sub></span> par la somme des
+	comptages (substitutions et identités) sur l'ensemble de
+	la matrice.
+	<p class='formula'>f<sub>i,j</sub> = (n<sub>j,i</sub>) / &Sigma;<sub>i,j</sub>(n<sub>i,j</sub>)</p>
+      </li>
+
+      <li><span class='formula'>f<sub>i</sub></span>
+	et <span class='formula'>f<sub>j</sub></span>:
+	fréquences respectives des
+	résidus <span class='formula'>i</span>
+	et <span class='formula'>j</span> dans cette même
+	collection.</li>
+    </ul>
+
+    <p>Le
+      produit <span class='formula'>f<sub>i</sub>f<sub>j</sub></span>
+      indique la <span class='concept'>fréauence relative attendue au
+	hasard</span>, c'est-à-dire la probabilité d'aligner les
+      résidus <span class='formula'>i</span>
+      et <span class='formula'>j</span> si on les avait tirés
+      aléatoirement, de façon indépendante, suivant leurs fréquences
+      respectives.</p>
+
+    <p>Le rapport <span class='formula'>f<sub>i,j</sub>/(f<sub>i</sub>f<sub>j</sub>)</span>
+      indique le niveau de sur- ou sous-représentation de la
+      substitution <span class='formula'>i, j</span> au sein des alignements. Il prend une valeur
+      <ul>
+	<li>ratio &gt;1 si cette substitution est plus fréquente qu'attendue;</li>
+	<li>ratio &lt;1 si cette substitution est moins fréquente qu'attendue;</li>
+	<li>ratio =1 si cette substitution est égale à sont espérance
+	  aléatoire.</li>
+      </ul>
+    <p>Le LOD est la transformation logarithmique (en base 2) de ce
+      rapport. Il est donc
+      <ul>
+	<li><b>LOD&gt;0</b> si cette substitution est plus fréquente
+	  qu'attendue au hasard (substitution
+	  dite <span class='concept'>conservative</span>
+	  ou <span class='concept'>acceptée</span>);</li>
+	<li><b>LOD&lt;0</b> si cette substitution est moins fréquente
+	  qu'attendue au hasard
+	  (substitution <span
+			   class='concept'>contre-sélectionnée</span>);</li>
+	<li>LOD=0 si cette substitution est égale à sont espérance
+	  aléatoire.</li>
+      </ul>
+    </p>
+
+    <a name='blosum'></a><h3>La série de matrices de substitution BLOSUM</h3>
+
+    <p>Henikoff et Henikoff (1982) définissent une série de matrices
+      de substitution sur base d'alignements locaux multiples
+      ("blocks" d'alignements). Les matrices de cette série portent
+      toutes le préfixe <span class='concept'>BLOSUM</span> (pour "BLOck SUbstitution Matrix"),
+      suivi d'un suffixe indiquant le pourcentage d'identité minimal
+      entre séquences utilisées pour construire la matrice.</p>
+
+
+
+    <p>La matrice BLOSUM62 a été construite à partir de blocks de
+      séquences protéiques alignées présentant un pourcentage
+      d'identité &ge;62%.</p>
+    <ul><a href='images/BLOSUM62_colored.png'><img width='100%' src='images/BLOSUM62_colored.png'></a></ul>
+
+    <p>La matrice BLOSUM30 a été construite à partir de blocks de
+      séquences protéiques alignées présentant un pourcentage
+      d'identité &ge;30%. Elle est donc adaptée à des alignemements de
+      protéines évolutivement distantes.
+      <ul><a href='images/BLOSUM30_colored.png'><img width='100%' src='images/BLOSUM30_colored.png'></a></ul>
+    </p>
+
+    <p>Il existe indubitablement une correspondance entre les
+      substitutions fréquentes (marquées en vert) des matrices
+      BLOSUM62 et BLOSUM30. Cependant, certaines substitutions
+      obtiennent des scores différents selon la distance évolutive, et
+      peuvent même passer d'un score négatif (substitutions
+      contre-sélectionnées) à un score positif (substitutions dites
+      "conservatives" ou "acceptées"). Il est donc crucial de choisir,
+      pour chaque alignement, une matrice BLOSUM dont le suffixe
+      correspond approximativement au taux de conservation (identités)
+      entre protéines alignées. </p>
+
+    <p>Ceci pose évidemment un problème de circularité: comment
+      peut-on savoir quelle matrice choisir avant d'avoir réalisé
+      l'alignement&nbsp;? La solution la plus simple est de commencer
+      par faire un alignement avec une matrice de conservation
+      "moyenne" (typiquement, la BLOSUM62, ce qui explique sa
+      popularité), puis de choisir la meilleure matrice
+      sur base du premier alignement, pour faire l'alignement final.</p>
+
+
+    <a name='choix_matrice'></a>
+    <h3>Comment choisir la bonne matrice de substitution pour réaliser un alignement&nbsp;?</h3>
+
+    <p>Quand on aligne deux ou plusieurs protéines, il est important
+      de choisir la matrice de substitutions la plus appropriée,
+      c'est-à-dire celle qui correspond le mieux possible leur taux
+      d'identité. </p>
+
+    <p>Pour la série de matrices BLOSUM (Henikoff & Henikoff, 1992),
+      le numéro de matrice indique le pourcentage d'identité
+      minimal pour lequel la matrice est appropriée.</p>
+
+    <p>Par exemple, 
+      <ul>
+	<li>La matrice <b>BLOSUM62</b> est appropriée pour aligner des
+	  séquences présentant au moins <b>62%</b> d'identité. Si l'on
+	  dispose de séquences présentant 64,3% d'identités, on
+	  choisira donc cette matrice.</li>
+	<li>Il faut interpréter ces indices comme des approximations
+	  plutôt que comme des seuils absolus. Donc, si l'on désire
+	  aligner des protéines ne présentant que 28.3% d'identité, on
+	  utilisera la matrice <b>BLOSUM30</b>.</li>
+      </ul>
+    </p>
+
+    <p>Bien entendu, cette règle pose un <b>problème de
+	circularité</b>: pour pouvoir aligner des protéines, il faut
+      choisir la matrice appropriée sur base de leur pourcentage
+      d'identité, mais pour connaître ce pourcentage, il faut déjà
+      disposer d'un alignement.</p>
+
+    <p>Une règle pratique assez simple consiste à suivre le protocole
+      suivant:
+      <ol>
+	<li>Effectuer un premier alignement avec une matrice
+	  intermédiaire (typiquement, la BLOSUM62).</li>
+	<li>Sur base du résultat de cet alignement, évaluer le
+	  pourcentage d'identité des protéines, et identifier la
+	  matrice correspondante dans la série BLOSUM.</li>
+	<li>Si cette matrice n'est pas la BLOSUM62, refaire
+	  l'alignement en choisissant cette fois la bonne
+	  matrice.</li>
+	<li>Vérifier si l'alignement final donne plus ou moins le même
+	  taux d'identités que l'alignement initial (et, en tout cas,
+	  si le taux d'identité final correspond à la matrice
+	  utilisée).</li>
+      </ol>
+
+      <a name='dot_plot'></a>
+      <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+      <h2>Dot plot</h2>
+
+    <p>Le dot plot est une représentation graphique qui indique les
+      régions identiques ou similaires entre deux séquences
+      biologiques. La première séquence entrée est projetée sur l'axe
+      horizontal, la seconde sur l'axe vertical.
+
+      <ul>
+	<li>Dans la représentation la plus simple, on marque d'un
+	  point les paires de lettres (résidus) identiques.</li>
+	<li>Pour mieux discriminer les régions conservées, on peut
+	  utilser une <span class='concept'>fenêtre</span>: on marque
+	  uniquement les mots identiques.</li>
+	<li>Pour augmenter la sensibilité, le score d'une fenêtre peut
+	  être calculé sur base d'une matrice de substitutions (on
+	  indique les paires de mots dont le score d'alignement
+	  dépasse un certain seuil).</li>
+      </ul>
+    <p>
+
+    <p class='tips'>Illustrations: voir diapos</p>
+
+    <a name='pairwise_align'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h2>Alignements par paires</h2>
+
+
+    <p>Un <span class='concept'>alignement par paire</span> indique
+      les régions similaires entre deux séquences biologiques
+      (nucléiques ou peptidiques).</p>
+
+
+    <a name='gaps'></a><h3>Les gaps</h3>
+
+    <p>Afin d'aligner au mieux les résidus identiques ou similaires
+      (scores positifs dans
+      les <a href='#matrices_substitutions'>matrices de
+	substitutions</a>), les programmes d'alignement peuvent insérer
+      des espacements (<span class='concept'>gaps</span>) au sein des
+      séquences alignées. Les gaps sont représentés par des traits
+      d'union "-".</p>
+
+    <pre>
+      R  L  A  S  V  E  T  D  M  P   -  -  -  -  -  L  T  L  R  Q  H
+      T  L  T  S  L  Q  T  T  L  K   N  L  K  E  M  A  H  L  G  T  H</pre>
+
+    <p>Les gaps peuvent être interprétés selon deux scénarios
+      évolutifs alternatifs:
+      <ol>
+	<li>perte des résidus par délétion dans la séquence présentant
+	  le gap;</li>
+	<li>gain de résidus par insertion dans l'autre séquence.</li>
+      </ol>
+    </p>
+
+    <p>L'alignement d'une paire de séquences ne permet pas de
+      départager ces deux possibilités. On définit le
+      terme <span class='concept'>indel</span> (<i>in extenso</i>:
+      insertion ou délétion) pour indiquer cet événement évolutif de
+      nature indéterminé qui est à l'origine du gap. </p>
+
+    <a name='score_alignement'></a><h3>Comment calculer le score brut d'un alignement&nbsp;?</h3>
+
+    <p>Pour calculer le score brut (<span class='en'>raw score</span>)
+      d'un alignement, on associe à chaque paire de résidus alignés le
+      score correspondant dans
+      la <a href='#matrices_substitutions'>matrice de
+	substitutions</a>.</p>
+
+    <p>Dans l'exemple ci-dessous, nous avons calculé le score de
+      l'alignement suivant avec la
+      matrice <a target='_blank' href="images/BLOSUM62_colored.png">BLOSUM62</a>.</p>
+
+    <pre>
+      R  L  A  S  V  E  T  D  M  P   -  -  -  -  -  L  T  L  R  Q  H
+      T  L  T  S  L  Q  T  T  L  K   N  L  K  E  M  A  H  L  G  T  H
+      -1 +4 +0 +4 +1 +2 +5 -1 +2 -1                 -1 -2 +4 -2 -1 +8</pre>
+
+    <p>On applique un traitement particulier pour assigner un score
+      aux gaps: on définit (de façon quelque peu arbitraire) deux
+      pénalités.
+      <ol>
+	<li>Pour la première position de chaque gap, on applique
+	  la <span class='concept'>pénalité d'ouverture de gap</span>
+	  (ci-dessous: -10).</li>
+	<li>Pour les résidus suivants du gap, on applique
+	  la <span class='concept'>pénalité d'extension de gap</span>
+	  (ci-dessous: -1). </li>
+	<li><b>Note:</b> on peut, de façon optionnelle, décider
+	  d'assigner ou non une pénalité aux gaps terminaux (en début
+	  et en fin d'alignement).</li>
+      </ol>
+    </p>
+
+    <p>On peut dès lors calculer le <span class='concept'>score
+	brut</span> (<span class='concept'>raw score</span>) en
+      additionnant, tout au long de l'alignement, des scores d'identité,
+      de substitution, d'ouverture et d'extension de gap.</p>
+
+    <pre>
+      R  L  A  S  V  E  T  D  M  P   -  -  -  -  -  L  T  L  R  Q  H
+      T  L  T  S  L  Q  T  T  L  K   N  L  K  E  M  A  H  L  G  T  H
+      -1 +4 +0 +4 +1 +2 +5 -1 +2 -1 -10 -1 -1 -1 -1 -1 -2 +4 -2 -1 +8 = 7 </pre>
+
+    <p>Enfin, pour faciliter la lecture de l'alignement, on insère
+      entre les deux séquences alignées un ligne de symboles. 
+      <table class='simple'>
+	<tr>
+	  <td>|</td>
+	  <td>identités &nbsp;</td>
+	</tr>
+	<tr>
+	  <td>:</td>
+	  <td>substitutions conservatives (celles qui ont un score
+	    positif dans la matrice de substitution)</td>
+	</tr>
+	<tr>
+	  <td>.</td>
+	  <td>substitutions non-conservatives (celles qui ont un score
+	    strictement négatif dans la matrice de substitution)</td>
+	</tr>
+	<tr>
+	  <td>-</td>
+	  <td>gaps</td>
+	</tr>
+      </table>
+    </p>
+
+    <pre>
+      R  L  A  S  V  E  T  D  M  P   -  -  -  -  -  L  T  L  R  Q  H
+      .  |  .  |  :  :  |  .  :  .                  .  .  |  .  .  |
+      T  L  T  S  L  Q  T  T  L  K   N  L  K  E  M  A  H  L  G  T  H
+      -1 +4 +0 +4 +1 +2 +5 -1 +2 -1 -10 -1 -1 -1 -1 -1 -2 +4 -2 -1 +8 = 7 </pre>
+
+
+    <a name='scores_derives'></a>
+    <h3>Scores dérivés d'un alignement&nbsp; par paires</h3>
+
+    <p>Au-delà du score brut, on peut dériver une série de scores qui
+      fournissent des informations complémentaires concernant la qualité
+      de l'alignement.</p>
+
+    <table class='simple' valign='top'>
+      <tr>
+	<td class='concept'>Longueur de l'alignement</td>
+	<td>Nombre de colonnes de l'alignement. Attention, la longueur
+	  de l'alignement diffère généralement de celle des séquences
+	  alignées, pour différentes raisons:
+	  <ul>
+	    <li>Dans un alignement global, la présence de gaps alternés
+	      dans les deux séquences peut générer un alignement plus log
+	      que chacune des séquences alignées. </li>
+	    <li>En cas d'alignement local, l'alignement peut se limiter
+	      à un fragment des protéines alignées, et peut donc être
+	      plus court que chacune des séquences alignées. Notons que
+	      ceci n'est pas forcé: selon les cas, un algorithme
+	      d'alignement local peut éventuellement arriver à un
+	      alignement qui recouvre les séquences alignées sur toute
+	      leur longeur, et, s'il y a des gaps, ce alignement sera
+	      plus long que les protéines alignées.</li>
+	  </ul>
+	</td>
+      </tr>
+
+      <tr>
+	<td class='concept'>Nombre d'identités</td>
+	<td>nombre de positions où sont alignés deux résidus
+	  identiques</td>
+
+      </tr>
+
+      <tr>
+	<td class='concept'>Pourcentage d'identités</td>
+	<td>Nombre d'identités divisé par la longueur totale de
+	  l'alignement. </td>
+      </tr>
+
+      <tr>
+	<td class='concept'>Nombre de similarités ("positives")</td>
+	<td>Nombre de positions de l'alignement caractérisées par un
+	  score positif dans la matrice de substitution (identités et
+	  substitutions "conservatives").</td>
+      </tr>
+
+      <tr>
+	<td class='concept'>Pourcentage de similarités</td>
+	<td>Nombre de similarités divisé par la longueur totale de
+	  l'alignement. </td>
+      </tr>
+    </table>
+
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <a name='global_local'></a><h2>Alignement global versus local</h2>
+
+    <p>Un <span class='concept'>alignement global</span> recouvre les
+      séquences alignées sur l'ensemble de leur longueur, tandis qu'un
+      <span class='concept'>alignement local</span> peut se limiter à
+      un fragment de chaque séquence.</p>
+
+    <p>L'intérêt de l'alignement global est de révéler les événements
+      évolutifs (délétions, insertions, substitutions) sur l'ensemble
+      de la longueur des séquences d'intérêt. On recourt par exemple
+      aux alignements globaux quand on veut étudier l'évolution d'une
+      famille de protéines dans son ensemble.</p>
+
+    <p>Les alignements locaux révèlent les segments conservés entre
+      deux ou plusieurs séquences. On les utilise par exemple pour
+      extraire un domaine conservé à partir d'une famille de séquences
+      homologues. </p>
+
+    <!--    <p class='attention'>A compléter</p>-->
+
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <a name='blast'></a><h2>BLAST: une famille d'outils pour la recherche de séquences par similarités</h2>
+
+    <p>BLAST est une méthode de recherche de séquences par similarité
+      qui effectue des alignements locaux entre
+      une <span class='concept'>séquence requête</span>
+      (<span class='concept'>query sequence</span>) et chacune des
+      séquences d'une base de données (par exemple UniprotKB, qui
+      recouvre 40 millions de séquences protéiques).</p>
+
+    <p>Pour pouvoir effectuer cette tâche énorme dans un temps
+      raisonnable, BLAST se base sur une approche heuristique: les
+      séquences de la base de données sont préalablement indexées dans
+      un "dictionnaire de mots", qui dresse la liste des séquences de
+      la base de données contenant chaque oligomère (oligopeptide pour
+      les bases de données de protéines, oligonucléotides pour les
+      séquences nucléiques) d'une taille donnée. </p>
+
+    <p>Quand on lance une recherche, BLAST commence par analyser la
+      séquence requête en dressant la liste des oligomères
+      présents. Il consulte ensuite le dictionnaire pour extraire la
+      liste des séquences de la base de données qui contiennent ces
+      mots, et lance un alignement par paire avec ce sous-ensemble des
+      séquences.</p>
+
+    <p>Cette heuristique est plus rapide que les méthodes d'alignement
+      par paire par programmation dynamique (Needleman-Wunsch en
+      alignement global, Smith-Waterman en alignement local), mais
+      elle présente un certain risque de louper des similarités.</p>
+
+    <a name='blast_modes'></a><h4>Les modalités de BLAST</h4>
+
+    <p>BLAST permet non seulement de comparer des séquences de même
+      type (protéine versus protéine, acide nucléique versus acide
+      nucléique), mais également d'effectuer des recherches avec une
+      séquence requête d'un type (peptidiques ou nucléiques) dans une
+      base de donnée de l'autre type. Pour ces recherches croisées,
+      les séquences nucléiques sont traduites dans les 6 cadres de
+      lectures (3 cadres de lecture par brin), et le résultat est
+      analysé avec l'algorithme blastp.</p>
+
+    <table>
+      <tr>
+	<th>Requête</th>
+	<th>Base de données</th>
+	<th>Logiciel</th>
+	<th>Exemples d'applications</th>
+      </tr>
+
+      <tr>
+	<td>séquence peptidique</td>
+	<td>séquence peptidique</td>
+	<td><span class='program'>blastp</span></td>
+	<td>
+	  <li>En partant d'une protéine de fonction connue, collecter
+	    les protéines similaires dans la base de données Uniprot
+	    afin de constituer la famille de protéine supposées
+	    homologues. </li>
+	</td>
+	<!--	<td>Collect sequences similar to the blue-sensitive opsin in
+		all human protéines.</td>
+	  -->      </tr>
+
+      <tr>
+	<td>séquence nucléique</td>
+	<td>séquence nucléique</td>
+	<td><span class='program'>blastn</span></td>
+	<td>
+	  <li>Comparer les séquences d'ARNm aux séquences génomiques.</li>
+	  <li>Aligner un ARN d'interférence (ARNi) sur un génome pour
+	    détecter ses cibles potentielles.</li>
+	</td>
+      </tr>
+      <tr>
+	<td>séquence nucléique (traduite dans les 6 cadres)</td>
+	<td>séquence peptidique</td>
+	<td><span class='program'>blastx</span></td>
+	<td>
+	  <li>Après avoir séquencé un morceau d'ADN, chercher des
+	    fragments potentiellement codants (susceptibles de produire
+	    un polypeptide similaire à des protéines connues) dans cette
+	    séquence même si on ne connaît pas la position des gènes.
+	  </li>
+	</td>
+      </tr>
+      <tr>
+	<td>séquence peptidique</td>
+	<td>séquence nucléique (traduite dans les 6 cadres)</td>
+	<td><span class='program'>tblastn</span></td>
+	<td>
+	  <li>Identifier une région génomique susceptible de coder
+	    pour un homologue d'une protéine d'intéret.</li>
+	  <li>Identifier dans un génome les pseudo-gènes (gènes
+	    défectifs, qui peuvent contenir un ou plusieurs codons
+	    stop) correspondant à une protéine d'intérêt.</li>
+	</td>
+	<!--	<td>Do cats see colors ? Get Human blue-sensitive opsin
+		protéine, connect UCSC genome browser, use BLAT to find
+		similarities in Cat genome</td>
+	  -->
+      </tr>
+      <tr>
+	<td>séquence nucléique (traduite dans les 6 cadres)</td>
+	<td>séquence nucléique (traduite dans les 6 cadres)</td>
+	<td><span class='program'>tblastx</span></td>
+	<td></td>
+      </tr>
+    </table>
+
+
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <a name='error_types'></a><h2>Les différents types d'erreurs de prédiction</h2>
+
+    <table>
+      <tr align='center'>
+	<td></td>
+	<td></td>
+	<th colspan='2'>Statut réel</th>
+      </tr>
+
+      <tr align='center'>
+	<td></td>
+	<td></td>
+	<th>+</th>
+	<th>-</th>
+      </tr>
+
+      <tr align='center'>
+	<th rowspan='3'>Prédiction</th>
+	<th>+</th>
+	<td><font color='green'>VP (vrai positif)</font></td>
+	<td><font color='red'>FP (faux positif)</font></td>
+      </tr>
+
+      <tr align='center'>
+	<th>-</th>
+	<td><font color='darkorange'>FN (faux négatif)</font></td>
+	<td><font color='darkblue'>VN (vrai négatif)</font></td>
+      </tr>
+    </table>
+
+    <h3>Statistiques d'évaluation des prédictions</h3>
+
+
+    <table>
+      <tr>
+	<td><span class='concept'>Sn</span></td>
+	<td width='170' class='concept'>Sensibilité
+	  <br>=taux de couverture
+	</td>
+	<td>fraction d'éléments de statut réel positif prédits comme
+	  positifs
+	</td>
+
+	<td width='150' class='formula'>
+	  Sn = VP / (VP + FN)
+	</td>
+      </tr>
+
+      <tr>
+	<td class='concept'>PPV</td>
+	<td class='concept'>Valeur prédictive positive</td>
+	<td>fraction de prédictions positives possédant un statut réel
+	  positif.
+	</td>
+
+	<td class='formula'>
+	  PPV = VP / (VP + FP)
+	</td>
+      </tr>
+
+      <tr>
+	<td class='concept'>FPR</td>
+	<td class='concept'>Taux de faux-positifs
+	  <br>(false positive rate)</td>
+	<td>fraction de prédictions positives parmi les éléments de
+	  statut réel négatif</td>
+	<td class='formula'>FPR = FP / (FP + VN)</td>
+      </tr>
+
+      <tr>
+	<td class='concept'>Sp</td>
+	<td class='concept'>Spécificité</td>
+	<td>fraction de prédictions négatives parmi les éléments de
+	  statut réel négatif</td>
+	<td class='formula'>Sp = VN / (FP + VN)</td>
+      </tr>
+
+      
+
+    </table>
+
+
+    <p>Il existe généralement un compromis entre sensibilité et PPV:
+      si l'on augmente les contraintes sur les prédictions (par
+      exemple en augmentant les seuils de similarité), on augmentera
+      la valeur prédictive positive mais on diminuera la
+      sensibilité.
+    </p>
+
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <a name='evalue'></a><h2>Comment interpréter une e-valeur ("expect")&nbsp;?</h2>
+
+    <p>La <span class='concept'>e-valeur </span>(en
+      anglais: <span class='concept'>e-value</span>
+      ou <span class='concept'>expect</span>
+      pour <span class='en'>expected value</span>) représente le
+      nombre de résultats qu'on s'attendrait à obtenir au hasard, en
+      fonction des paramètres utilisés pour un programme. </p>
+
+    <p>Par exemple, le logiciel <span class='program'>BLAST</span>
+      caractérise chaque alignement par une e-valeur, qui est calculée
+      en fonction du le score brut, de la longueur des protéines
+      alignées, et de la taille de la base de données (quand la taille
+      d'une base de données augmente, on a plus de chances d'observer
+      un hit fortuit). La e-valeur est le paramètre le plus
+      informatif, d'une part parce qu'elle tient compte de l'ensemble
+      des autres paramètres, d'autre part parce que son interprétation
+      est directe: elle nous informe quant au risque que nous prenons
+      si nous considérons la similarité comme significative. La
+      e-valeur est liée au concept de
+      <span class='concept'>risque de faux positifs</span>: le risque
+      de considérer comme significatif un résultat qui ne l'est
+      pas. 
+    </p>
+
+    <p>Une <span class='concept'>e-valeur faible</span> indique qu'un
+      résultat est statistiquement
+      <span class='concept'>significatif</span>.
+      <ul>
+	<li><p>Par exemple, si un alignement obtenu par BLAST est associé
+	    à une e-valeur de 1e-3, cela signifie qu'on s'attendrait à
+	    0.001 faux-positifs dans des condisions
+	    similaires. Autrement dit, si l'on faisait l'analyse avec
+	    des séquences aléatoires, un alignement d'aussi bonne
+	    qualité sortirait en moyenne une fois sur 1000.
+	</p></li>
+
+	<li><p>Au contraire, des résultats associés à une e-valeur
+	    supérieure à 1 devraient toujours être considérés avec
+	    prudence (je dirais même méfiance). En effet, une e-valeur
+	    de 10 signifie que si l'on avait effectué une analyse avec
+	    des données aléatoires, on s'attendrait à obtenir une
+	    dizaine de résultats. Ces résultats pourraient être
+	    qualifiés de <span class='concept'>faux-positifs</span>,
+	    c'est-à-dire des éléments déclarés significatifs alors
+	    qu'ils ne le sont pas.  Il est donc généralement recommandé
+	    d'imposer un seuil stringent sur l'e-valeur.</p></li>
+
+	<li><p>Il n'est pas rare que des
+	    alignements de BLAST retournent une e-valeur très basse, par
+	    exemple 1e-150. Ce score très significatif indique qu'il est
+	    extrêmement improbable que ce la similarité entre la
+	    protéine requête et le hit provienne du hasard. L'hypothèse
+	    alternative est que cette similarité de séquence reflète le
+	    fait que les deux séquences dérivent d'un ancètre
+	    commun. Dans un tel cas, on peut conclure que les deux
+	    séquences sont très vraisemblablement homologues. </p></li>
+
+	<li>Dans certains cas, les programmes affichent une e-valeur
+	  de 0. Ceci ne signifie pas qu'il est formellement impossible
+	  d'obtenir un tel alignement par hasard, mais que la e-valeur
+	  est inférieure à la limite de précision de BLAST
+	  (~1e-172).
+	</li>
+
+      </ul>
+
+    <p>La e-valeur ne s'applique pas uniquement aux résultats de
+      BLAST. La plupart des logiciels bioinformatiques indiquent la
+      significativité des résultats, sous forme de e-valeur ou
+      d'autres statistiques apparentées. Il est essentiel de pouvoir
+      interpréter ces nombres pour éviter de se faire flouer par un
+      résultat apparemment prometteur.</p>
+
+
+    <a name='alignements_multiples'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h2>Alignements multiples</h2>
+
+
+    <p>La méthode la plus utilisée pour aligner plusieurs protéines
+      est l'<span class='concept'>alignement progressif</span>. Elle
+      se décompose en plusieurs étapes:
+      <ol>
+	<li>Calcul d'une <span class='concept'>matrice de
+	    distance</span> entre toutes les paires de séquences.</li>
+	<li>Construction d'un <span class='concept'>arbre-guide</span>
+	  à partir de cette matrice de distances</li>
+	<li>Construction de l'<span class='concept'>alignement</span>
+	  sur base de l'arbre-guide</li>
+      </ol>
+    </p>
+
+    <a name='matrice_distance'></a>
+    <h3>Matrice de distances entre paires de séquences</h3>
+
+    <p>La première étape d'un alignement progressif consiste à aligner
+      chaque paire de séquences, et à calculer leur distance. On
+      regroupe les résultats dans une <span class='concept'>matrice de
+	distances</span>, où
+      <ul>
+	<li>chaque ligne correspond à une séquence</li>
+	<li>chaque colonne correspond à une séquence</li>
+	<li>la valeur <span class='formula'>d<sub>i,j</sub></span>
+	  indique la distance entre la
+	  séquence <span class='formula'>i</span> et la
+	  séquence <span class='formula'>j</span>.</li>
+      </ul>
+    </p>
+
+    <table class='simple' align='center'>
+      <tr><td>&nbsp;</td><th>seq 1</th><th>seq 2</th><th>...</th><th>seq n</th></tr>
+      <tr><th>seq 1</th><td>d1,1</td><td>d1,2</td><td>...</td><td>d1,n</td></tr>
+      <tr><th>seq 2</th><td>d2,1</td><td>d2,2</td><td>...</td><td>d2,n</td></tr>
+      <tr><th>...</th><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+      <tr><th>seq n</th><td>dn,1</td><td>dn,2</td><td>...</td><td>dn,n</td></tr>
+    </table>
+
+
+    <p>Les alignements par paires peuvent être effectués en utilisant
+      la programmation dynamique (algorithme de Needleman-Wunsch) ou une
+      heuristique plus rapide (fasta, blast).</p>
+
+    <a name='arbre_guide'></a>
+    <h3>Construction de l'arbre-guide</h3>
+
+    <p>A partir de la matrice de distance, on peut construire un
+      <span class='concept'>arbre-guide</span> par la méthode
+      du <span class='concept'>Neighbour joining</span>
+      (<span class='concept'>NJ</span>).</p>
+
+    <p>Le principe est d'établir en premier lieu un branchement qui
+      relie les deux séquences les plus proches (celles qui ont la
+      distance minimale dans la marice de distances), puis les
+      séquences un peu moins proches, et ainsi de suite jusqu'à avoir
+      branché toutes les séquences.</p>
+
+    <p class='attention'>Attention: l'arbre-guide ne doit en aucun cas
+      être considéré comme inférence des relations phylogénétiques
+      entre séquences.</p>
+
+    <p>Il s'agit uniquement d'un outil utilisé temporairement pour
+      déterminer l'ordre d'incorporation des séquences dans
+      l'alignement entre séquences multiples.</p>
+    <p>L'inférence
+      phyogénétique nécessite des analyses plus poussées, qui ne
+      pourront être effectuées q'uaprès avoir obtenu l'alignement
+      multiple.</p>
+
+    <a name='alignement_progressif'></a><h3>Alignement progressif</h3>
+
+    <p>Après avoir calculé la matrice de distance et construit
+      l'arbre-guide, on construit l'alignement multiple en incorporant
+      progressivement les séquences selon leur ordre de branchement
+      dans l’arbre guide, en remontant des plus proches aux plus
+      éloignées.
+    </p>
+
+    <p><a href='images/progressive_alignment_schema.png'><img width='100%' src='images/progressive_alignment_schema.png'></a></p>
+
+
+    <a name='motifs'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h2>Motifs dans les séquences</h2>
+
+
+    <a name='consensus'></a><h3>Consensus</h3>
+
+    <p>Chaîne de caractère indiquant les résidus conservés à chaque
+      colonne d'un alignement multiple.</p>
+
+    <p>Le consensus est obtenu en retenant, pour chaque colonne d'un
+      alignement multiple, soit un seul résidu (on parle alors
+      de <span class='concept'>consenssu strict</span>, soit une
+      combinaison de résidus représentatifs
+      (<span class='concept'>consensus dégénéré</span>). Les consensus
+      dégénérés peuvent être représentés par
+      des <a href='#regexp'>expressions régulières</a>, combinées avec
+      les spécifications IUPAC pour les résidus ambigüs.
+    </p>
+
+    <p>Un consensus fournit une représentation compacte d'un motif
+      séquentiel. Les consensus sont par exemple utilisés
+      <ul>
+	<li>pour les séquences nucléiques, afin de représenter les
+	  motifs de liaison de facteurs transcriptionnels sur les
+	  séquences d'ADN,</li>
+	<li>pour des séquences peptidiques, afin de représenter les
+	  caractéristiques de domaines conservés au sein de familles
+	  de protéines homologues.</li>
+      </ul>
+    </p>
+
+    <p>Le consensus fournit une représentation compacte et intuitive
+      d'un motif, mais souffre de quelques limitations.
+      <ul>
+	<li>Les règles appliquées pour décider si l'on représentera
+	  une colonne de l'alignement par un résidu unique ou une
+	  combinaison de résidus sont floues, et varient selon les
+	  auteurs.</li>
+	<li>En cas de positions ambigües, le consensus indique quels
+	  résidus sont acceptés, mais n'indique pas la fréquence
+	  relative de ces résidus dans les alignements initiaux
+	  (contrairement aux profils, ou matrices position-poids).</li>
+      </ul>
+    </p>
+
+    <a name='regexp'></a>
+    <h3>Expressions régulières</h3>
+
+    <p>Une <span class='concept'>expression régulière</span> est une
+      chaîne de caractères qui décrit
+      un <span class='concept'>motif</span>
+      (ou <span class='concept'>pattern</span>) composé de différents types 
+      d'éléments.
+      <ul>
+	<li>Caractères partfaitement déterminés (composés dans
+	  l'alphabet des acides aminés ou nucléotides selon le
+	  cas).</li>
+	<li>Une série de lettres entre crochets <tt>[ ]</tt> indique
+	  une liste de résidus alternatifs acceptés à cette position
+	  (résidus partiellement déterminés).<li>
+	<li>Un nombre entre accolades représente la répétition d'un
+	  caractère. Le nombre de répétitions peut êter fixe
+	  (ex: <tt>A{4}</tt> = <tt>AAAA</tt>) ou variable
+	  (<tt>N{3,20}</tt> signifie "un nombre de nucléotides variant
+	  entre 3 et 20").</li>
+	<li>Pour les motifs peptidiques, une série de résidus entre
+	  accolades signifie "tout sauf ces résidus". Par
+	  exemple <tt>{AL}</tt> signifie "n'importe quel acide aminé
+	  sauf A et L".</li>
+      </ul>
+    </p>
+
+    <p>Exemples:
+      <ul>
+	<li>L'expression régulière: <tt>GAT[AT]AG</tt> signifie "la
+	  séquence <tt>GAT</tt> suivie soit d'un <tt>A</tt> soit
+	  d'un <tt>T</tt>, lui-même suivi de <tt>AT</tt>". </li>
+	<li>Pour des séquences nucléiques, l'expression
+	  régulière <tt>CCGn{11}CGG</tt> signifie "la
+	  séquence <tt>CCG</tt> suivie de 11 résidus indifférents (A, C,
+	  G ou T), suivis d'une séquence <tt>CGG</tt>"</li>
+	<li>Pour des séquences peptidiques, l'expression
+	  régulière <tt>[AV]-x-L{2}</tt> décrit un motif qui commence
+	  par soit Alanine soit Valine, (<tt>[AV]</tt>), suivi par
+	  n'importe quel acide aminé (<tt>x</tt>), suivi par 2
+	  Leucines (<tt>L{2}</tt>).
+	</li>
+      </ul>
+    </p>
+
+
+
+    <a name='phylogenie'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h2>Phylogénie moléculaire</h2>
+
+    <a name="evenements"></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    </a><h3>Evénements évolutifs</h3>
+    
+    <ul>
+      <li><p><span
+		class='concept'><a
+				   name='duplication'>Duplication</a></span>: une duplication
+	  est une mutation qui génère un doublement d'une partie de
+	  l'ADN génomique. La duplication peut recouvrir l'ensemble du
+	  génome (formation de polyploïdes), un chromosome entier, ou
+	  un fragment de chromosome de taille plus ou moins
+	  grande. </p>
+	<p>Les duplications peuvent entraîner la formation de copies
+	  multiples d'un ou plusieurs gènes, provoquant ainsi une
+	  certaine redondance de l'information génétique. Dans
+	  certains cas, l'une des copies dupliquées du gène acquiert,
+	  par accumulation de mutations, de nouvelles caractéristiques
+	  qui lui permettent d'assumer une nouvelle fonction. Ce
+	  mécanisme,
+	  appelé <span class='concept'>duplication-divergence</span>,
+	  est à l'origine de la diversification des fonctions
+	  biologiques.
+      </p></li>
+
+      <li><p><span
+		class='concept'><a name='speciation'>Spéciation</a></span>:
+	  processus évolutif qui résulte en la formation d'espèces
+	  distinctes à partir d'une seule espèce. 
+      </p></li>
+
+      <li><p><span class='concept'>Homologie</span>: lien évolutif
+	  entre deux traits (organes, séquences, ...)  qui dérivent
+	  d'un trait ancestrale commune.</p>
+	<p>Les différences entre les deux caractères homologues
+	  résultent de l’accumulation de mutations à partir de l’ancêtre
+	  commun. Il s’agit donc d’une évolution par <span class='concept'>divergence
+	    évolutive</span>.
+      </p></li>
+
+      <li><p><span class='concept'>Analogie</span>: ressemblance entre
+	  deux traits (organes, séquence) qui ne résulte pas d'une
+	  origine ancestrale commune (par opposition à
+	  l'<span class='concept'>homologie</span>).</p>
+
+	<p>En cas d'analogie, on suppose que les traits similaires
+	  sont apparus de façon indépendante. Leur ressemblance peut
+	  éventuellement manifester l’effet d’une pression évolutive
+	  qui a sélectionné les mêmes propriétés. Dans ce cas, on
+	  parle de <span class='concept'>convergence évolutive</span>.
+      </p></li>
+      
+    </ul>
+
+    <a name='arbres'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Arbres phylogénétiques</h3>
+
+    <ul>
+
+      <li><p><span class='concept'>UTO</span>&nbsp;:
+	  <span class="concept">Unité taxonomique
+	  opérationnelle</span>. Noeud d'un arbre phylogénétique pour
+	  lequel on dispose d'échantillons (en phylogénie moléculaire,
+	  les échantillons consistent en séquences
+	  macromoléculaires). Les unités opérationnelles correspondent
+	  à des espèces actuelles. Sur un arbre phylogénétique, les
+	  UTO apparaissent comme
+	  des <span class="concept">feuilles</span>
+	  (<span class="concept">noeuds terminaux</span>).</p></li>
+
+      <li><p><span class='concept'>UTH</span>: <span class='concept'>Unité
+	    taxonomique hypothétique</span>. Noeud d'un arbre
+	    taxonomique pour lequel on ne dispose pas
+	    d’échantillons. Les UTH correspondent aux espèces
+	    ancestrales des UTO. Elles sont inférées durant le
+	    processus d'analyse phylogénétique. Sur un arbre
+	    phylogénétique, les UTH apparaissent comme
+	    des <span class="concept">noeuds internes</span>.</p></li>
+      
+
+      <li><p><span class="concept">Noeud non résolu</span>: noeud
+	  interne (UTH) connecté à plus de deux branches descendantes
+	  (branchement non-binaire). Les noeuds non résolus
+	  correspondent à des situations pour lesquelles il subsiste
+	  une ambiguité concernant l'ordre des événements
+	  évolutifs.</p></li>
+
+      <li><p><span class='concept'>Clade</span>: groupe monophylétique
+	  comportant une unité taxonomique et l'ensemble de ses
+	  descendants. Sur un cladogramme, le clade correspond à
+	  l'ensemble des ramifications descendant à partir d'un noeud
+	  interne.</p></li>
+
+      <a name='cladogramme'></a><h4>Cladogramme</h4>
+
+      <p>Arbre phylogénétique représentant les relations entre espèces
+	(et l'ordre des branchements entre leurs ascendants), sans
+	indication des distances évolutives. </p>
+
+      <a name='phylogramme'></a><h4>Phylogramme</h4>
+
+      <p>Arbre phylogénétique dont les longueurs des branches
+	représentent les distances évolutives (nombre de
+	modifications).</p>
+
+      <a name='chronogramme'></a><h4>Chronogramme</h4>
+
+      <p>Arbre phylogénétique dont les longueurs des branches
+	représentent le temps.</p>
+
+      <a name='horloge'></a><h4>Hypothèse d'horloge moléculaire</h4>
+
+      <p>L’hypothèse de l’horloge moléculaire consiste à supposer que
+	les taux d’évolution ne varient pas entre branches. </p>
+      
+      <p>Cette hypothèse n’est généralement pas valide:
+	<ul>
+	  <li>Dans certains cas, deux gènes divergent d’un ancêtre
+	    commun, mais l’un diverge plus vite que l’autre. Cette
+	    dernière situation est d’ailleurs plutôt commune: une
+	    duplication crée une certaine redondance, et l’une des
+	    copies peut évoluer plus vite que l’autre, qui conserve la
+	    fonction initiale (les mutations sont se produisent sur les
+	    deux copies, mais sont contre-sélectionnées sur l’une des
+	    deux).</li>
+	  <li>Par ailleurs, pour un même gène, le taux de mutations
+	    peut varier selon les époques. </li>
+	</ul>
+      <p>Cette hypothèse a cependant une valeur pragmatique, car elle
+	permet de positionner les noeuds ancestraux (HTU) dans un
+	chronogramme.</p>
+
+      <a name='enracinement'></a><h4>Enracinement d'un arbre</h4>
+
+      <p>Certaines méthodes d'inférences (UPGMA) produisent des arbres
+	enracinés (l'inférence d'une racine fait partie intrinsèque de
+	l'algorithme). Dans le cas de l'algorithme UPGMA, la racine
+	est positionnée sur le point de l’arbre équidistant de toutes
+	les feuilles.  Ceci suppose que toutes les lignées ont évolué
+	à la même vitesse depuis leur divergence (Hypothèse de
+	l’horloge moléculaire). </p>
+
+      <p>D'autres méthodes (Neighbour Joining, parcimonie, maximum de
+	vraisemblance) produisent des arbres sans racine: l'algorithme
+	n'émet pas d'hypothèse concernant la localisation de la
+	racine.</p>
+
+      <p>On applique deux approches alternatives pour insérer une
+	racine:
+	<ol>
+	  <li>Utilisation d'un groupe externe
+	    (<span class="concept">outgroup</span>). </li>
+	  <li>Positionnement de la racine sur la branche qui minimise la
+	    somme des distances aux UTO.</li>
+	</ol>
+      </p>
+
+      <li><p><span class='concept'>Réconciliation</span> de l'arbre
+	  des molécules et de l'arbre des espèces. La réconciliation
+	  consiste à comparer un arbre des molécules et un arbre des
+	  espèces pour identifier l'événement évolutif (duplication ou
+	  spéciation) qui a donné lieu à chaque branchement d'une famille
+	  de séquences homologues.</p></li>
+
+    </ul>
+
+    <a name='distances_sur_arbres'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Estimation des distances sur un arbre phylogénétique</h3>
+
+    <p class='tips'>Voir diapos</p>
+
+    <a name='bootstrap'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Bootstrap</h3>
+
+    <p>Le <span class='concept'>booststrap</span> est une stratégie
+      basée sur le rééchantillonnage, qui vise à estimer la robustesse
+      d'une procédure appliquée à un jeu de données. Le principe est
+      d'appliquer de façon itérative la même procédure à un
+      sous-ensemble des données sélectionné aléatoirement. On compare
+      ensuite les résultats obtenus avec les différents
+      sous-ensembles: s'ils sont similaires, la procédure sera
+      qualifiée de <span class='concept'>robuste</span>. </p>
+
+    <p>Dans le domaine de la phylogénie moléculaire, on utilise le
+      bootstrap pour estimer la robustesse de l'arbre phylogénétique
+      inféré par rapport aux données (alignement multiple) qui ont
+      servi à le générer. Pour ce faire, on sélectionne aléatoirement
+      un sous-ensemble des colonnes de l'alignement multiple, à partir
+      desquelles on infère un arbre phylogénétique. On répète
+      l'opération (typiquement 100 ou 1000 fois) et on compare les
+      arbres obtenus. Chaque branchement de l'arbre initial (celui
+      obtenu avec toutes les colonnes de l'alignement) est annotée en
+      indiquant le nombre de fois où ce même branchement se retrouve
+      dans les bootstraps. </p>
+
+    <p align='center'><a href='images/bootstrap_example.png'><img width='90%' src='images/bootstrap_example.png'></a></p>
+    <p class='legend'>Valeurs de boostrap sur l'arbre
+      phylogénétique des alcohol déhydegénases de bactéries. </p>
+
+    <a name='algos_arbres'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Relations entre algorithmes d'inférence phylogénique et arbres</h3>
+
+    <table>
+      <tr valign="top">
+	<th>Méthode</th>
+	<th>Type d'arbre</th>
+	<th>Hypothèse d'horloge moléculaire</th>
+	<th>Enracinement</th>
+      </tr>
+
+      <tr valign="top">
+	<td>Parcimonie</td>
+	<td>Cladogramme</td>
+	<td align="center">Non</td>
+	<td align="center">Non</td>
+      </tr>
+
+      <tr valign="top">
+	<td>UPGMA</td>
+	<td>Chronogramme</td>
+	<td align="center">Oui</td>
+	<td align="center">Oui</td>
+      </tr>
+
+      <tr valign="top">
+	<td>Neighbour joining</td>
+	<td>Phylogramme</td>
+	<td align="center">Non</td>
+	<td align="center">Non</td>
+      </tr>
+
+      <tr valign="top">
+	<td>Maximum de vraisemblance ("Maximum likelihood" en anglais)</td>
+	<td>Phylogramme</td>
+	<td align="center">Non</td>
+	<td align="center">Non</td>
+      </tr>
+
+    </table>
+
+
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <address>
+      <a target='_blank' href='http://www.univ-provence.fr/gsite/Local/egee/dir/meglecz/'>Emese Meglécz</a> 
+      (<a target='_blank' href='http://www.imbe.fr/'>IMBE</a>, 
+      <a target='_blank' href='http://www.univ-amu.fr'>Aix-Marseille Université</a>)
+      & 
+      <a target='_blank' href='http://jacques.van-helden.perso.luminy.univmed.fr/'>Jacques van Helden</a> 
+      (<a target='_blank' href='http://tagc.univ-mrs.fr/'>TAGC</a>, 
+      <a target='_blank' href='http://www.univ-amu.fr'>Aix-Marseille Université</a>).
+    </address>
+  </body>
+</html>
+
+
+<!--
+
+    séquence consensus
+
+    arbre-guide
+
+    matrice de profil
+
+    logo
+
+    expression régulière
+
+    divergence évolutive
+
+    types d'homologie
+
+
+  -->

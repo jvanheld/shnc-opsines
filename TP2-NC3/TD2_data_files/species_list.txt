@@ -1,0 +1,17 @@
+Felis catus
+Pteropus alecto
+Monodelphis domestica
+Thylamys elegans
+Macropus eugenii
+Tarsipes rostratus
+Oryctolagus cuniculus
+Ornithorhynchus anatinus
+Tachyglossus aculeatus
+Papio anubis
+Macaca fascicularis
+Homo sapiens
+Mus musculus
+Rattus norvegicus
+Setonix brachyurus
+Bos taurus
+Sus scrofa

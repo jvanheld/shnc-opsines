@@ -1,0 +1,910 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>TD1 - Bases de données, aligements</title>
+    <link rel="stylesheet" type="text/css" href="course.css">
+  </head>
+  
+
+  <body>
+    <p class="header">AMU    &nbsp;::   Sciences et Humanités - L2   &nbsp;::    Nature et culture   &nbsp;::    année 2018/2019</p>
+    
+    <h1>Phylogénie moléculaire - TD1<br>Bases de données et recherche par similarité de séquences</h1>
+
+	    <div class='attention'>
+      <p>Chaque TP est constitué d'une série d'exercices. </p>
+	  <p>Ouvrez deux fenêtres : une pour ce tutoriel et l'autre pour le QCM (questionnaire)
+	  associé au tutoriel (vous pouvez trouver le lien sur AMETICE). </p>
+	  <p>Suivez ce tutoriel et faites les exercices. Les questions qui apparaissent 
+	  au fond rose se trouvent également dans le QCM. Répondez aux questions 
+	  au fur et à mesure dans le QCM.</p>
+	  <p><b>Attention! Si vous ne suivez pas le tutoriel, les questions de QCM peuvent 
+	  être ambiguës. Ne faites pas l'impasse sur le tutoriel, c'est le cœur 
+	  de l'apprentissage dans cet enseignement.</b> </p>
+	  
+	 <p><b> Attention aux réponses libres du questionnaire : </b></p>
+	 <ul>
+		<li>Ecrivez les <b>nombres sans espace et sans virgule</b>. Par exemple : <b>9365589</b>
+		à la place de 9 365 589 ou 9,365,589</li>
+		<li>Utilisez le <b>point pour les valeurs décimales</b>. Par exemple <b>3.14</b>
+		à la place de 3,14</li>
+		<li>Si on demande un <b>pourcentage</b> écrivez uniquement le nombre <b>sans
+		le signe %</b>. Par exemple <b>30</b> à la place de 30% ou 0.3</li>
+		<li>Si on demande une <b>proportion</b> ne donnez pas la réponse en pourcentage. 
+		Par exemple écrivez <b>0.3</b> à la place de 30%.</li>
+	</ul>
+
+    </div>
+    
+    <hr><a name="contenu"></a>
+    <h2>Contenu</h2>
+    <ul>
+      <li><a href="#prerequis">Prérequis</a></li>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#objectifs">Objectifs</a></li>
+      <li><a href="#controle">Contrôle des connaissances</a></li>
+      <li><a href="#uniprot">UniprotKB/Swiss-prot, base de données de séquences protéiques</a></li>
+      <li><a href="#blastp_opsins">Collecte des protéines similaires aux opsines avec blastp</a></li>
+	  <li><a href="#tblastn">Recherche des pseudogènes - Urate oxydase</a></li>
+      <li><a href="#ressources">Ressources</a></li>
+    </ul>
+
+    
+    <a name="prerequis"></a>
+    <a href="#contenu"><font size="-2">[Retour à la table des matières]</font></a><hr>
+    <h2>Prérequis</h2>
+    
+    <p>Le matériel de support est disponible ici.</p>
+      <ul>
+	<li><a target="_blank" href="https://ametice.univ-amu.fr/mod/resource/view.php?id=507578">diapos CM1</a></li>
+      </ul>
+
+    <p>Lors du premier cours, nous avons présenté une introduction aux
+      concepts biologiques liés à la vision des couleurs, et commencé
+      à fournir les premiers éléments pour l'analyse bioinformatique
+      des séquences. 
+      <ol>
+	<li>La vision des couleurs</li>
+	<li>Bases de données biologiques</li>
+	<li>Alignement par paire</li>
+	<li>Matrice de substitution</li>
+	<li>Recherche de séquences par similarité</li>
+      </ol>
+    </p>
+
+    <p>Nous n'avons pas eu le temps d'approfondir ces concepts,mais
+      nous reviendrons dessus pendant les séances de TP.</p>
+    
+    <a name="intro"></a>
+    <a href="#contenu"><font size="-2">[Retour à la table des matières]</font></a><hr>
+    <h2>Introduction</h2>
+
+    <p>Pendant le cours, nous avons vu que la perception des couleurs
+      repose sur une famille de protéines spécialisées appelées
+      <b><i>opsines</i></b>, qui sont exprimées dans les
+      cellules-cônes de la rétine.</p>
+    
+    <p>La plupart des mammifères ont une vision dichromatique, dans
+      laquelle interviennent deux opsines: 
+      </p><ul>
+	<li>Opsine sensible aux ondes courtes
+	  (<font color="blue">bleu</font>): <i><b><font color="blue">SWS</font></b>, short
+	    wavelengths-sensitive</i></li>
+
+	<li>Opsine sensible aux ondes moyennes à
+	   longues: <i><b><font color="#00BB00">MWS</font>/<font color="red">LWS</font></b>,
+	   (medium/long wavelengths-sensitive opsins)</i>. Le pic de
+	   sensibilité varie entre le
+	  <font color="#00BB00">vert</font> et
+	   le <font color="red">rouge</font> selon les espèces.
+	</li>
+      </ul>
+   
+    
+    <p>La vision trichromatique est apparue chez les primates de
+      l'ancien monde, du fait d'une duplication de l'opsine MWS/LWS,
+      suivie d'une spécialisation de chacune des copies. On trouve
+      donc chez ces espèces trois opsines:
+      </p><ul>
+	<li><font color="blue"><b>SWS</b>: short wavelengths-sensitive
+	    (bleu)</font></li>
+	<li><font color="#00BB00"><b>MWS</b>: medium
+	    wavelengths-sensitive (vert)</font></li>
+	<li><font color="red"><b>LWS</b>: long wavelengths-sensitive
+	    (rouge)</font></li>
+      </ul>
+   
+
+    <a name="objectifs"></a>
+    <hr><a href="#contenu"><font size="-2">[Retour à la table des matières]</font></a>
+    <h2>Objectifs des TD</h2>
+    
+    <p>Le but de cette série de TD sera d'utiliser une série de
+      méthodes bioinformatiques afin de retracer l'évolution des
+      opsines chez les mammifères. En particulier, nous tenterons
+      d'identifier les événements évolutifs qui ont présidé à
+      l'apparition de la vision trichromatique chez les primates de
+      l'ancien monde. </p>
+
+    <h3>Objectifs spécifiques</h3>
+
+    <p class="tips"><b>Convention:</b> nous adoptons un style
+      particulier pour introduire
+      les <span class="concept">concepts</span>. Pour plus
+      d'information, consultez la page
+      de <a href="concepts.html">définition des
+	concepts</a>. </p>
+
+    <ol>
+      
+      <li><p>TD1. Apprendre à formuler une requête structurée pour
+	  obtenir la liste des séquences d'opsines dans une base des
+	  données.</p></li>
+
+      <li><p>TD1. Effectuer
+	    une <span class="concept"><a href="concepts.html#blast">recherche
+	    par similarité de séquences</a></span>.</p></li>
+    
+      <li><p>TD2. Inférer
+	    un <span class="concept"><a href="concepts.html#arbres">arbre
+	    phylogénétique</a></span> des opsines des mammifères pour
+	    pouvoir retracer l’évolution des opsines et les
+	    espèces. Effectuer
+	    une <span class="concept">réconciliation</span> entre cet
+	  <span class="concept">arbre moléculaire</span> et
+	  l'<span class="concept">arbre des espèces</span>, afin
+	  d'identifier les événements
+	  de <span class="concept">spéciation</span>
+	  et <span class="concept">duplication</span>.</p></li>
+    </ol>
+
+
+    
+    <a name="controle"></a>
+    <a href="#contenu"><font size="-2">[Retour à la table des matières]</font></a><hr>
+    <h2>Contrôle des connaissances</h2>
+
+    <p>Les tutoriels sont entrecoupés de questions auxquelles vous
+      pouvez répondre en un ou quelques mots. Nous vous indiquerons,
+      au fil de ce TD, les moments où il vous faudra encoder les
+      réponses dans les questionnaires du site d'Ametice. </p>
+
+
+    <a name="uniprot"></a>
+    <hr><a href="#contenu"><font size="-2">[Retour à la table des matières]</font></a>
+    <h2>UniprotKb/Swiss-prot, base de données de séquences protéiques</h2>
+    <h3>Buts de ce tutoriel</h3>
+
+    <ul>
+      <li>Se familiariser avec la base de données de protéines
+	UniprotKB et sa section annotée Swiss-prot. </li>
+      <li>Apprendre à formuler des requêtes structurées avec
+	UniprotKB/Swiss-prot.</li>
+      <li>Explorer le contenu des annotations de Swiss-prot.</li>
+      <li>Collecter les séquences peptidiques de quelques opsines. </li>
+    </ul>
+
+    <div class="tips">
+      <h3>Tips</h3>
+      <ol>
+	<li><p>Comme pour les autres bases de données, il est vivement
+	  recommandé d'utiliser les <b>requêtes structurées</b>
+	  (<span class="option">Advanced search</span>), pour formuler une requête initiale
+	  ou pour la raffiner progressivement.</p></li>
+
+	<li><p>Pour certains champs (par
+	  exemple <span class="option">Organism</span>,
+	  ou <span class="option">Taxonomy</span>), l'interface
+	  d'Uniprot dispose d'un mécanisme de <b>complétion
+	  automatique</b>:</p> Quand vous tapez les premières lettres
+	  de votre requête, toutes les valeurs qui commencent par ces
+	  lettres vous sont présentées. Cette fonctionnalité est
+	  particulièrement utile pour les champs dont le contenu est
+	  restreint à une liste de valeurs précises (noms
+	  d'organismes, groupes taxonomiques), ou est défini par un
+	  vocabulaire contrôlé (par exemple <i>Gene
+	  Ontology</i>).</li>
+      </ol>
+    </div>
+
+    <h3>Tutoriel</h3>
+
+   
+    <div class='protocol'>
+      <ol>
+	<li><p>Dans un onglet séparé, ouvrez une connexion à la base
+	    de données <a target='_blank'
+	    href='http://www.uniprot.org/'><b>Uniprot</b></a>.</p></li>
+	<li><p>Le page d'accueil affiche le nombre des séquences accessibles dans UniProt.</p></li>
+	<div class="exo">
+	<h4>Exercice 1.1 : Uniprot - Page d'accueil</h4>
+	<ol>
+		<li>Quelle est le nom de base de données contenant uniquement
+		des séquences annotées par un humain (reviewed) ?</li>
+		<li>Combien de séquences contient-elle ?</li>
+		<li>Quelle est le nom de la base de données contenant uniquement
+		des séquences annotées automatiquement et qui n'ont fait l'objet
+	    d'aucune vérification par un être humain ?</li>
+		<li>Combien de séquence contient-elle ?</li>
+	</ol>
+	</div>
+		
+
+
+	<li><p><b>Requête naïve</b>
+	    <br>Dans la boîte de requêtes (en haut de la page), tapez les
+	    mots-clés suivants pour sélectionner les opsines du chat (<i>Felis catus</i> en latin) : 
+	    par exemple <tt>Felis catus opsin</tt>. Combien de résultats
+	    obtenez-vous  ?
+
+	</p></li>
+
+	<li><p>Vous pouvez <b>sélectionner des champs à afficher dans le tableau de résultats.</b>
+	    <br>Cliquez sur le le bouton <b>Columns</b>. 
+		Vous trouverez tous les champs possibles à afficher regroupés par catégories.
+		Affichez le nom de l'espèce, l'identifiant Taxonomique de l'espèce (Organism ID) 
+		et sa lignée (Taxonomic lineage), la longueur et la fonction de la séquence et le nom de la protéine. </p>
+		<p>Enregistrez ce reglage (<b>Save</b>)</p>
+
+	    <p>La table de résultats est mise à jour, avec l'ajout de
+	      colonnes indiquant les informations que
+	      vous avez sélectionnées. Ces résultats correspondent-ils
+	      à vos attentes ? Toutes les protéines
+	      sont-elles annotées comme opsines ? Pourquoi ?</p>
+	</p></li>
+
+	<li><p><b>Requête structurée</b>
+	    <ul>
+	      <li>Cliquez sur <b>Advanced</b> à côté de la boîte de recherche.</li>
+		  <li>Effacez vos termes de recherche précédents en cliquant sur 
+		  les petites poubelles à côté des boîtes.</li>
+	      <li>Dans le champ <b>All</b>, sélectionnez <i>Organism
+		  [OS]</i>, et commencez à taper les lettres de nom de
+		l'espèce en latin : <tt>Felis catus</tt>. Au fil de votre
+		encodage, l'interface Uniprot affiche un menu de plus en
+		plus restreint, avec la liste des organismes
+		correspondant à ce que vous avez
+		tapé. Sélectionnez <i>Felis catus [9685]</i> et
+		cliquez sur <b>Search</b> pour lancer la recherche.
+		<p class='tips'> 9685 est l'identifiant taxonomique de l'espèce <i>Felis Catus</i></p>
+		Nous avons obtenu 41254 séquences (2/11/2018), dont 224 ont été annotées par un être
+		humain (Swiss-Prot)</li>
+	      <li>Pour ajouter un filtre de sélection, cliquez à
+	      nouveau sur <b>Advanced</b>.</li>
+	      <li>Notez l'opérateur
+		logique <i>AND</i> en début de ligne (il correspond à
+		nos besoins, mais pour d'autres requêtes nous pourrions
+		utiliser <i>NOT</i> ou <i>OR</i>.</li>
+	      <li>Sélectionnez le champ <i>Protein name
+		  [DE]</i>, entrez <tt>opsin</tt> et lancez la recherche. La
+		  sélection correspond-elle mieux à vos attentes
+		  ?</li>
+	      <li>Lisez attentivement la requête structurée qui
+		apparaît dans la boîte de requête. 
+		L'interface interactive convertit
+		automatiquement vos requêtes en une phrase que vous
+		pourrez éventuellement réutiliser ou adapter
+		ultérieurement.  </li>
+	      <li>Vous pouvez facilement sélectionner les protéines de
+		Swiss-prot, en cliquant sur <b>reviewed (2)</b>, en haut
+		à gauche. Notez
+		la modification de la formule syntactique pour la
+		requête stucturée.</li>
+	    </ul>
+	</p></li>
+
+
+
+
+
+	<li><p><b>Sauvegarde de la table des résultats et des séquences</b>.
+	    <br>
+	    <ul>
+	      <li>Vous pouvez télécharger les résultats de votre recherche 
+		  à l'aide du bouton <b>Download</b>.</li>
+	      <li>Uniprot vous permet d'exporter les résultats dans
+		divers formats. Les formats les plus pratiques pour
+		les tableaux de résultats sont <i>Tab-Delimited</i>
+		ou <i>Excel</i>. </li>
+		<li>Choisissez la version <b>Uncompressed</b></li>
+	      <li>Exportez le tableau de résultats pour les opsines du
+		chat. Vous pouvez ouvrir le fichier avec un
+		tableur (Microsoft Excel ou OpenOffice) pour vérifier
+		le contenu.</li>
+		
+
+	<li>En cliquant sur le bouton <b>Download</b>, 
+	vous pouvez également sélectionner le format <b>fasta</b> (canonical) qui
+	contient les séquences. 
+	Sauvegardez le fichier sur votre
+		ordinateur, et ouvrez-le avec un éditeur de
+		texte simple (Notepad++, gedit...). Vérifiez le format des séquences. En principe,
+		le fichier devrait ressembler à ceci (les premières
+		protéines peuvent varier selon la requête effectuée):
+
+		<pre>
+>sp|O18914|OPSR_CANFA Long-wave-sensitive opsin 1 OS=Canis familiaris GN=OPN1LW PE=2 SV=2
+MTQRWGPQRLAGGQPQAGLEESTQASIFTYTNSNATRDPFEGPNYHIAPRWVYHLTSAWM
+IFVVIASVFTNGLVLVATMRFKKLRHPLNWILVNLAIADLAETIIASTISVVNQIYGYFV
+LGHPLCVVEGYTVSLCGITGLWSLAIISWERWLVVCKPFGNVRFDAKLAIAGIAFSWIWA
+AVWTAPPIFGWSRYWPHGLKTSCGPDVFSGSSYPGVQSYMIVLMTTCCIIPLSVIILCYL
+QVWLAIRAVAKQQKESESTQKAEKEVTRMVVVMVLAYCLCWGPYTFFACFAAAHPGYAFH
+PLVAALPAYFAKSATIYNPIIYVFMNRQFRNCILQLFGKKVDDSSELSSASRTEASSVSS
+VSPA
+>sp|O18913|OPSR_FELCA Long-wave-sensitive opsin 1 OS=Felis catus GN=OPN1LW PE=2 SV=2
+MTQRWGPQRLAGGQPHAGLEDSTRASIFTYTNSNATRGPFEGPNYHIAPRWVYHVTSAWM
+IFVVIASVFTNGLVLAATMKFKKLRHPLNWILVNLAVADLAETIIASTISVVNQIYGYFV
+LGHPMCVLEGYTVSLCGITGLWSLAIISWERWLVVCKPFGNVRFDAKLAIAGIAFSWIWA
+AVWTAPPIFGWSRYWPHGLKTSCGPDVFSGSSYPGVQSYMIVLMITCCIIPLSVIVLCYL
+QVWLAIRAVAKQQKESESTQKAEKEVTRMVMVMIFAYCVCWGPYTFFACFAAAHPGYAFH
+PLVAALPAYFAKSATIYNPIIYVFMNRQFRNCIMQLFGKKVDDGSELSSASRTEASSVSS
+VSPA
+		</pre>
+		
+		<div class='tips'>
+		<p >
+		  Le fichier contient plusieurs séquences, chacune
+		  étant précédée d'une ligne de description commençant
+		  par un caractère <tt>&gt;</tt>. 		</p>
+		  <ul>
+		    <li>Le premier mot de la ligne de description (ce
+		      qui précède le premier espace) est l'identifiant de
+		      la séquence (par
+		      exemple <tt>sp|O18914|OPSR_CANFA</tt>). </li>
+		    <li>La ligne de description peut éventuellement
+		    contenir des commentaires libres (pour la première séquence ci-dessus: 
+		      <tt>Long-wave-sensitive opsin 1 OS=Canis familiaris GN=OPN1LW PE=2 SV=2</tt>).</li>
+			</ul>
+		</div>
+		</li>
+		</ul>
+		
+	<li><p>Nous allons maintenant élargir la requête: sélectionnez
+	    toutes les opsines de Swiss-prot pour l'ensemble de l'ordre des rongeurs
+	    (<i>Rodentia</i> en latin).
+		
+		<div class='tips'>
+		<p>Sélectionnez le champ <b>Taxonomy[OC]</b> pour trouver des 
+		séquences d'un groupe d'organismes</p>
+		<p>Utilisez la complétion automatique</p>
+		</div>
+	</li>
+
+
+    <a name='there'></a>
+    <div class='exo'>
+    <h4>Uniprot - requête structurée</h4>
+	<p><b>Exercice 1.2 : Sélection progressive au moyen de requêtes avancées</b></p>
+    <ol>
+	      <li>En formulant une requête structurée (<b>Advanced
+	      search</b>), combien de <b>protéines</b> (pas seulements les opsines) trouvez-vous pour
+	      l'orde des <b>rongeurs</b> (<i>Rodentia</i>) dans Uniprot ?</li>
+		  
+	      <li>Combien <b>d'opsines</b> trouvez-vous dans Uniprot (pas seulements des rongeurs) ?</li>
+	      <li>Combien <b>d'opsines</b> des <b>rongeurs</b> se trouvent dans Uniprot?</li>
+		<li>Combien <b>d'opsines de rongeurs</b> se trouvent dans <b>Swiss-Prot</b> ?</li>
+	      <li>Quelle est la requête structurée qui vous a permis
+		d'obtenir la dernière réponse ?</li>
+	</ol>
+	<p><b>Exercice 1.3 : Recherche d'informations dans la fiche d'une protéine</b>
+	<br>Découvrez les différents champs de fiche de la protéine 
+	  <a href="http://www.uniprot.org/uniprot/O18913" target="_blank">O18913</a> 
+	  et répondez aux questions suivantes : </p>
+	<ol>
+	      <li>Quel sont les noms recommandés et alternatifs de la protéine de la fiche O18913 ?</li>
+	      <li>Quel gène code pour cette protéine ?</li>
+ 	      <li>De quel espèce provient-elle ?</li>
+	      <li>Cette espèce fait-elle partie des Eutheria ?</li>
+	      <li>Est-ce une séquence annotée par un humain ?</li>
+	      <li>Quelle est la fonction de cette protéine ?</li>
+		  <li>Dans quelle partie de la cellule se trouve cette protéine ?</li>
+		<li>Quelle est la longueur de cette séquence ?</li>
+      </ol>
+    </div>
+	
+      </ol>
+    </div>
+
+
+    <a name="blastp_opsins"></a>
+    <a href="#contenu"><font size="-2">[Retour à la table des matières]</font></a><hr>
+    <h2>Recherche des séquences par similarités</h2>
+
+     <h3>Buts de ce tutoriel</h3>
+    
+    <p>L'objectif général de ce tutoriel est d'apprendre à effectuer
+      des recherches par similarités, en comparant
+      une <span class="concept">séquence d'intérêt</span>
+      (<span class="concept">query sequence</span>) avec chacune des
+      séquences d'une base de données. Pour effectuer les recherches
+      par similarité, nous utiliserons le
+      logiciel <span class="program">BLAST</span>.
+      </p><div class="tips">
+	<ul>
+	  <li>Avant de passer à la suite, nous vous suggérons de lire
+	    la description
+	    des <a href="concepts.html#blast"><span class="concept">modalités</span>
+	    de BLAST</a>.</li>
+
+	  <li>Pour respecter la nomenclature de BLAST sans utiliser de
+	    périphrases en français, nous utiliserons ci-dessous les
+	    noms de <span name="hit" class="concept">hit</span>
+	    ou <span class="concept">HSP</span> (High Scoring Pair)
+	    pour désigner une séquence de la base de données rapportée
+	    par BLAST comme simliaire à la séquence requête.
+	  </li>
+	</ul>
+      </div>
+   
+
+    <p>Les objectifs particuliers sont d'acquérir les compétences
+      suivantes: 
+      </p><ol>
+	<li>Comprendre les situations pour lesquelles une recherche
+	  par similarités de séquences peut s'avérer utile.</li>
+	<li>Connaître les
+	  différentes <a href="concepts.html#blast_modes">modalités
+	  de comparaisons de séquences</a> (selon la nature,
+	  peptidique ou nucléique, des séquences requête et de la base
+	  de données).</li>
+	<li>Interpréter les résultats de la recherche en termes de
+	  significativité statistique (en particulier,
+	  savoir <a href="concepts.html#evalue">interpréter la
+	  e-valeur</a>).</li>
+	<li>Comprendre la signification biologique des résultats.</li>
+      </ol>
+   
+
+    <h3>Tutoriel</h3>
+
+
+    <div class='protocol'>
+      <h3>Recherche des opsines avec blastp</h3>
+      
+      <ol>
+	<li><p>Connectez-vous à <a target='_blank'
+				   href='http://www.uniprot.org/'>Uniprot</a> et récupérez la
+	    séquence peptidique de <b>l'opsine sensible aux ondes moyennes 
+		(green sensitive opsin) chez la poule (<i>Gallus gallus</i>)</b>.
+		Si plusieurs entrées correspondent à votre requête, sélectionnez la séquence dans Swiss-Prot.</p>
+		<div class='tips'>
+		<p>Pour afficher la séquence en format fasta, cliquez sur son identifiant
+		et choisissez <b>FASTA (canonical)</b> à l'onglet <b>Format</b>.</p>
+		</div>
+		</li>
+		
+	</li>
+	
+	<li><p>Ouvrez une connexion au <a target='_blank'
+					  href='http://www.ncbi.nlm.nih.gov/blast/'>serveur BLAST du
+	      NCBI server</a>, ouvrez
+	    l'outil <span class='program'>protein blast</span>
+	    (<span class='program'>blastp</span>) et cherchez les
+	    protéines similaires chez les <b>oiseaux (<i>Aves</i>)</b>.
+	     <div class='tips'>
+	
+		<ol type="a">
+			<li><p>Connectez-vous au site Web <a target='_blank'
+					     href='http://blast.ncbi.nlm.nih.gov/'>BLAST du NCBI</a> et
+	    sélectionnez l'outil <span class='program'>protein
+	      blast</span>, qui compare des séquences protéiques avec
+	    les banques de données protéiques.</p></li>
+	
+	<li><p>Copiez votre séquence requête dans la
+	    fenêtre <span class='option'>Enter accession number(s),
+	      gi(s), or FASTA séquence(s)</span>.  Alternativement, vous
+	    pouvez copier l'identifiant de votre séquence dans la même
+	    fenêtre, ou télécharger le fichier que vous aviez
+	    précédemment sauvegardé, en cliquant sur le
+	    bouton <span class='option'>upload file</span>.</p></li>
+
+	<li><p>Observez les différentes bases des données disponibles
+	    dans le menu
+	    déroulant <span class='option'>Database</span>.
+	    Sélectionnez la base de données non-redondante
+	    (<span class='option'>non-redundant protein sequences
+	      (nr)</span>).
+	</p></li>
+	
+	<li><p>L'option <span class='option'>Organism</span> permet
+		  de spécifier soit un nom d'espèce, soit
+		  un nom de taxon. </p>
+		  <p>L'interface assure la complétion automatique: quand
+		  vous commencez à taper un nom d'organisme ou de taxon,
+		  les noms compatibles sont affichés, et leur choix se
+		  restreint au fur et à mesure que vous complétez le
+		  nom.</p>
+		  <p>Utilisez le nom latin du taxon recherché (<b>Aves</b>).
+		  Certains noms communs en anglais sont aussi reconnus par le 
+		  logiciel (par exemple <b>birds</b>).</p>
+		  </li>
+	
+	<li><p>Sélectionnez
+	    l'algorithme <span class='program'>blastp</span>. </p></li>
+	
+	<li><p>Cliquer sur <span class='option'>Algorithm
+	      parameters</span> pour observer les paramètres par défaut de
+	    BLAST</p></li>
+	
+	<li><p>Laissez les paramètres à leurs valeurs par défaut, et
+	    lancez la recherche.</p></li>
+      </ol>
+
+	  </div>
+	</p></li>
+
+	<li><p>
+		Observez le page de résultat de BLAST
+		<div class='tips'>
+		<p>Le page de résultat de BLAST est composé de 4 parties essentielles :
+		<ol>
+			<li><p>Entête
+				<ul>
+					<li>Information sur la séquence requête
+					<ul>
+						<li>Identifiantcde la séquences requête (sp|P28683|OPSG_CHICK),</li>
+						<li>Type de molécule (amino acid)</li>
+						<li>longueur (355)</li>
+					</ul></li>
+					<li>Information sur la BLAST
+					<ul>
+						<li>Algorithme de BLAST (BLASTP)</li>
+						<li>Version (2.7.1+)</li>
+						<li>La banque interrogé (nr)</li>
+					</ul></li>
+					<li>Autres liens utiles (Serach summary, Taxonomy Report…)</li>
+				</ul>
+			</p></li>
+			<li><p>Résumé Graphique (<b>Graphique summary</b>)
+				<ul>
+					<li><p>Le graphique '<b>Show Conserved Domains</b>' </p>
+					<p>est le résultat de la recherche des domaines protéiques dans la <b>BDD 
+					Conserved Domains</b>. Cette recherche est lancée automatiquement 
+					en parallèle de BLAST contre des BDD des séquences protéiques 
+					et fournit des informations <b>complémentaires</b> au BLAST principal.</p>
+					</li>
+					<li><p>Distribution of XXX Blast Hits on the Query Sequence</p>
+						<ul>
+							<li>La barre épaisse rouge représente la séquence requête.</li>
+							<li>Les autres fines barres fins représentent les fragments de 
+							séquences similaires à la séquence requête trouvés dans la BDD. </li>
+							<li>Le graphique est limité aux premier 100 hits.</li>
+							<li>Le code de couleurs est basé sur le score des alignements.</li>
+						</ul>
+					</li>
+				</ul>
+			</p></li>
+
+			<li><p>Descriptions
+			<ul>
+				<li>Chaque ligne affiche un hit et quelques indices élémentaires 
+				(score, couverture de la séquence requête par le HSP, E-valeur…)</li>
+			</ul>
+			</p></li>
+			<li><p>Alignements
+			<ul>
+				<li>Alignements deux à deux. (Pour l'interprétation voir Cours 4)</li>
+			</ul>
+			</p></li>
+
+		</div>
+	</p></li>
+
+	<li><p>Parmi les meilleurs hits examinez l'alignment de la séquence
+		requête avec la séquence <b>XP_003213023.1</b>. Analysez-le
+	    en tentant de faire le rapport entre les caractéristiques de
+	    l'alignement et les scores qui le caractérisent: score brut,
+	    identités, résidus "positifs" (identités et substitutions
+	    conservatives), gaps, expect.
+	  <div class='tips'>
+	  <p>
+	    BLAST retourne une série de scores associés à chaque
+	    alignement: score brut, pourcentage d'identités,
+	    pourcentage de positifs, e-valeur, ... A priori il n'est
+	    donc pas évident de savoir quel score indique le "meilleur
+	    hit". </p>
+	  <p>Le critère le plus pertinent pour évaluer la
+	    significativité d'un alignement est
+	    son <span class='concept'>e-valeur</span>: les e-valeurs
+	    les plus faibles correspondent aux hits les plus
+	    significatifs. Par défaut, les résultats de BLAST sont
+	    donc triés par ordre croissant d'e-valeur. Consultez la
+	    page de <a href='concepts.html#evalue'>description des
+	    concepts</a> pour obtenir des explications plus détaillées
+	    concernant la e-valeur.
+	  </p>
+	  </div>
+	</p></li>
+	
+	 <div class='exo'>
+		<h4>Exercice 2.1 : Collecte de protéines similaires aux opsines avec blastp -
+		Opsine MWS de la poule contre des séquences des oiseaux</h4>
+		<ol>
+			<li><p>L'identifiant de l'opsine sensible aux ondes moyennes 
+			(green sensitive opsin) chez la poule</p></li>
+			<p><b>Examinez l'alignement de la séquence requête et la séquence XP_003213023.1</b></p>
+			<li><p>Nom latin de l'organisme de la séquence XP_003213023.1</p></li>
+			<li><p>Notez les valeurs des indices suivants
+				<ul>
+				<li>Longueur de l'alignement</li>
+				<li>Pourcentage d'identité</li>
+				<li>Pourcentage de positifs</li> 
+				<li>Pourcentage de gaps</li>
+				<li>E-valeur (expect)</li>
+				</ul>
+			</p></li>			
+			<p><b>Répondez par VRAI ou FAUX</b></p>
+			<li><p>La ressemblance entre ces deux protéines est presque parfaite, 
+			et l'alignement couvre la longueur totale des deux protéines.</p></li>
+			<li><p>La e-valeur indique qu'il est improbable qu'un tel niveau de 
+			similarité résulte du hasard. </p></li>
+			<li><p>L'hypothèse la plus vraisemblable est que ces deux 
+			protéines se ressemblent parce qu'elles dérivent d'un ancêtre 
+			commun, autrement dit, on peut conclure qu'elles sont homologues.</p></li>
+
+		</ol>
+      </div>
+	
+	<li><p>Refaites tourner blastp avec la même protéine requête,
+	    en limitant cette fois la recherche aux protéines des 
+		<b><a href="http://fr.wikipedia.org/wiki/Bacillariophyta" target='_blank'>Diatomées</a> 
+		(<i>Bacillariophyta</i>)</b>. Comparez les résultats avec ceux
+	    des oiseaux.</p></li>
+		
+	 <div class='exo'>
+		<h4>Exercice 2.2 : Collecte de protéines similaires aux opsines avec blastp - 
+		Opsine MWS de la poule contre des séquences des diatomées</h4>
+		<ol>
+			<b><p>Examinez l'alignement de la séquence requête et la séquence XP_002297504.1</p></b>
+			<li><p>Nom latin de l'organisme de la séquence XP_002297504.1</p></li>
+			<p><b>Notez les valeurs des indices suivants</b></p>
+			<li><p>Longueur de l'alignement</p></li>
+			<li><p>Pourcentage d'identité</p></li>
+			<li><p>Pourcentage de positifs</p></li> 
+			<li><p>Pourcentage de gaps</p></li>
+			<li><p>E-valeur (expect)</p></li>
+			<li><p>Longueur de la séquence requête</p></li>
+			<li><p>Longueur de la séquence sujet (la séquence trouvée dans la base de données)</p></li>
+			<li><p>Pourcentage de la couverture de la séquence sujet</p></li>
+			
+			<p><b>Répondez par VRAI ou FAUX</b></p>
+			<li><p>L'alignement couvre la longueur totale des deux protéines.</p></li>
+			<li><p>La e-valeur indique qu'il est improbable qu'un tel niveau de 
+			similarité résulte du hasard. </p></li>
+			<li><p>L'hypothèse la plus vraisemblable est que ces deux 
+			protéines se ressemblent parce qu'elles dérivent d'un ancêtre 
+			commun, autrement dit, on peut conclure qu'elles sont homologues.</p></li>
+
+		</ol>
+      </div>
+
+	  	<div class='exo'>
+		<h4>Exercice 2.3 : Comparaison de 2 BLAST précédents</h4>
+		<ol>
+			<p><b>En quoi les trois résultats ci-dessus révèlent-ils le type 
+			d'alignement réalisé par BLAST (<a href='concepts.html#global_local'>global ou
+			local</a>) ? Répondez par VRAI ou FAUX</b></p>
+			<li><p>BLAST réalise les alignements globaux car il compare la séquence 
+			requête avec toutes les séquences d'une base de données.</p></li>
+			<li><p>BLAST réalise les alignements locaux car il aligne 
+			que des régions similaires entre deux séquences. 
+			L'alignement donc ne couvre pas nécessairement la totalité des deux séquences.</p></li>
+			<li><p>BLAST réalise les alignements locaux donc il n'est pas 
+			capable d'aligner deux séquences sur toutes leurs longueurs.</p></li>
+			<li><p>Le caractère local de l'alignement apparaît dans les 
+			alignements avec les séquences de Diatomées: 
+			les alignements sont plus courts que les longueurs des 
+			protéines alignées. </p></li>
+		
+		</ol>
+		</div>
+	
+	<li><p>Faites une recherche de similarités en utilisant comme
+	    requête l'opsine verte de la poule, contre l'ensemble des
+	    <b>protéines de la poule</b> de la base de données non-redondante,
+	    en restreignant la <b>e-valeur à 1e-10</b> et en spécifiant 
+		de retourner <b>250 hits</b> maximum.
+	  <p class='tips'>
+	    Pour modifier le seuil de e-valeur et les nombres maximums des hits,
+		cliquez sur le
+	    lien <span class='option'>Algorithm parameters</span> au
+	    bas du formulaire BLAST, et modifiez la valeur des
+	    l'options <span class='option'>Expect threshold</span> et 
+		<span class='option'>Max target sequences</span>
+	  </p>
+	</p></li>
+	
+	<li><p>Dans la liste de hits, analysez la fonction des
+	    protéines les plus éloignées de la séquence requête. Leur
+	    fonction semble-t-elle liée à la vision des couleurs?
+	    Comment interprétez-vous la similarité entre ces protéines
+	    et l'opsine&nbsp;?</p></li>
+
+	  	<div class='exo'>
+		<h4>Exercice 2.4 : BLAST de l'opsine verte de la poule contre les protéines de la poule</h4>
+		<ol>		
+			<li><p>Combien de hit retourne par le BLAST de l'opsine verte de 
+			la poule contre l'ensemble des protéines de la poule avec une 
+			e-valeur inférieure ou égale à 1e-10 ? </p>
+			<p class='tips'>En cliquant sur <span class='concept'>All</span> 
+			en haut de la table des résultats, vous sélectionnez tous les hits et leur 
+			nombre sera affiché (Selected : xxx ).</p>
+			</li>
+			<p><b>Répondez par VRAI ou FAUX</b></p>
+			<li><p>Les hits les plus éloignés sont majoritairement des récepteurs. </p></li>
+			<li><p>Ces protéines sont impliquées dans la perception visuelle. </p></li>
+			<li><p>La e-valeur très faible (expect &lt;= 1e-10) suggère que tous ces 
+			récepteurs dérivent d'un ancêtre commun avec les opsines. </p></li>
+
+		</ol>
+		</div>
+		
+      </ol>
+
+      </div>
+    
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <a name='tblastn'></a><h2>Recherche des homologues de protéine CMAH (Questionnaire supplémentaire)</h2>
+    <p>Nous allons chercher les homologues de protéine CMAH du rat 
+      (<a target='_blank' href='http://www.uniprot.org/uniprot/F1LNX8'>F1LNX8</a>)
+      chez l'homme en suivant deux stratégies&nbsp;:</p>
+    <ul>
+      <li>Recherche des homologues parmi les protéines de référence de l'homme</li>
+      <li>Recherche des homologues parmi les séquences génomiques de l'homme.</li>		
+    </ul>
+
+    <div class='protocol'>
+      <div class='exo'>
+	<h3>Exercice 3.1 : Protéine CMAH - modalité de BLAST</h3>
+	<ol>
+	  <li>Quel type de BLAST allez-vous utiliser pour comparer la protéine
+	    CMAH avec la banque des séquences protéiques&nbsp;?</li>
+	  <li>Quel type de BLAST allez-vous utiliser pour comparer la protéine 
+	    CMAH avec les séquences génomiques&nbsp;?</li>
+	</ol>
+      </div>
+      
+      <ol>
+	<li>Lancer les deux BLAST dans deux fenêtres différentes à 
+	<a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi" target="_blank">NCBI-BLAST</a>.</li>
+	<li>L'identifiant de votre séquence requête est F1LNX8 dans les deux cas.</li>		
+	<li>Vous pouvez utiliser les paramètres par défaut des BLAST, mais</li>
+	<ul>
+	  <li><p>choisissez la banque de <b>refseq-proteins</b> et la banque <b>refseq_genomes</b>.</p></li>
+	  <li><p>limitez votre recherche à des séquences humaines dans la boite 'organism'.</p></li>
+	</ul>
+      </ol>
+
+      <div class='exo'>
+	<h3>Exercice 3.2 : Protéine CMAH - résultats des BLAST</h3>
+	<ol>
+	
+		<li><p>Combien d’homologues BLAST a-t-il trouvé dans la banque refseq-proteins ?</li></p>
+		<li><p>Combien de séquences BLAST a-t-il trouvé dans la banque refseq-genomic ?</li></p>
+		
+		<p><b>Analysez l’alignement de la séquence requête avec la séquence NC_000006.12</b></p>
+		<li><p>Le premier alignement commence à la position 25113785 de la séquence de la banque. 
+		Quelle est l’unité de cette position ?</li></p>
+		<li><p>Combien de régions de la séquence NC_000006.12 sont-elles alignées avec la protéine requête ?</li></p>
+		<li><p>Ces régions sont-elles homologues à une partie de la séquence requête.</li></p>
+		<li><p>A quoi ces régions correspondent-elles ?</li></p>
+		<li><p>A quoi correspond le signe * dans l’alignement de région 9 (range 9) ?</li></p>
+		<li><p>A quoi correspond GRCh38 dans la description de la séquence NC_000006.12 ?</li></p>
+		
+		<p><b>Répondez par VRAI ou FAUX</b></p>
+		
+		<li><p>On ne trouve pas d'homologue à la protéine du rat chez l’homme, 
+		car le gène de CMAH est non-fonctionnel chez l’homme.</li></p>
+		<li><p>Le gène dégradé (pseudogène) de CMAH est bien présent dans le 
+		génome humain mais sa traduction montre de très peu de similarité 
+		à la protéine du rat. </li></p>
+		<li><p>Le pseudogène humain n'est pas homologue au gène du rat.</li></p>
+
+	</ol>
+      </div>
+    </div>
+	
+	
+    <a href="#contenu">[Retour à la table des matières]</a>
+    <hr><a name="ressources"></a>
+    <h2>Ressources</h2>
+
+    <p>Ce TD est basé sur les ressources suivants. </p>
+
+    <a name="table_biomolecular_databases"></a>
+    <table>
+
+      <tbody><tr>
+	<th>Acronym</th>
+	<th>Type</th>
+	<th>Description+URL</th>
+      </tr>
+
+      <tr valign="top">
+	<td>EMBL</td>
+	<td>Nucleic sequences</td>
+	<td>The EMBL Nucleic Sequence Database (EBI - UK)
+	  <br><a target:="_blank" href="http://www.ebi.ac.uk/embl/">http://www.ebi.ac.uk/embl/</a>
+	</td>
+
+      </tr><tr valign="top">
+	<td>Genbank</td>
+	<td>Nucleic sequences</td>
+	<td>Genbank (NCBI - USA)
+	  <br><a target="_blank" href="http://www.ncbi.nlm.nih.gov/Genbank/">http://www.ncbi.nlm.nih.gov/Genbank/</a>
+      </td></tr>
+
+      <tr valign="top">
+	<td>DDBJ</td>
+	<td>Nucleic sequences</td>
+	<td>DDBJ - DNA Data Bank of Japan
+	  <br><a target="_blank" href="http://www.ddbj.nig.ac.jp/">http://www.ddbj.nig.ac.jp/</a>
+	</td>
+      </tr>
+
+      <tr valign="top">
+	<td>UniProt</td>
+	<td>Protein sequences</td>
+	<td>UniProt - the Universal Protein Resource
+	  <br><a target="_blank" href="http://www.uniprot.org/">http://www.uniprot.org/</a></td>
+      </tr>
+     
+      
+      <tr valign="top">
+	<td>EnsEMBL</td>
+	<td>Genome browser</td>
+	<td>EnsEMBL Genome Browser (Sanger Institute + EBI)
+	  <br><a target="_blank" href="http://www.ensembl.org/">http://www.ensembl.org/</a></td>
+      </tr>
+      
+      <tr valign="top">
+	<td>UCSC</td>
+	<td>Genome browser</td>
+	<td>UCSC Genome Browser (University California Santa Cruz - USA)
+	  <br><a target="_blank" href="http://genome.ucsc.edu/">http://genome.ucsc.edu/</a></td>
+      </tr>
+      
+      <tr valign="top">
+	<td>ECR</td>
+	<td>Genome browser</td>
+	<td>ECR Browser
+	  <br><a target="_blank" href="http://ecrbrowser.dcode.org/">http://ecrbrowser.dcode.org/</a></td>
+      </tr>
+     
+    
+      <tr valign="top">
+	<td>Entrez</td>
+	<td>Multi-database</td>
+	<td>A collection of biomolecular databases maintained at the <b>NCBI</b> (USA), accessible via an interface called <b>Entrez</b>. 
+	  <br><a target="_blank" href="http://www.ncbi.nlm.nih.gov/Entrez/">http://www.ncbi.nlm.nih.gov/Entrez/</a></td>
+      </tr>
+      
+      <tr valign="top">
+	<td>SRS</td>
+	<td>Data warehouse</td>
+	<td>A collection of biomolecular databases maintained at the European 
+Institute for Bioinformatics (EBI, UK), accessible via an interface 
+called <b>SRS</b>
+	  <br><a target="_blank" href="http://srs.ebi.ac.uk/">http://srs.ebi.ac.uk/</a></td>
+      </tr>
+      
+    </tbody></table>
+
+    <a href="#contenu"><font size="-2">[Retour à la table des matières]</font></a><hr>
+    <address>
+      <a target="_blank" href="http://www.univ-provence.fr/gsite/Local/egee/dir/meglecz/">Emese Meglécz</a> 
+      (<a target="_blank" href="http://www.imbe.fr/">IMBE</a>, 
+      <a target="_blank" href="http://www.univ-amu.fr/">Aix-Marseille Université</a>)
+
+      &amp; 
+
+      <a target="_blank" href="http://jacques.van-helden.perso.luminy.univmed.fr/">Jacques van Helden</a> 
+      (<a target="_blank" href="http://tagc.univ-mrs.fr/">TAGC</a>, 
+      <a target="_blank" href="http://www.univ-amu.fr/">Aix-Marseille Université</a>).
+    </address>
+
+    
+
+
+
+</body></html>

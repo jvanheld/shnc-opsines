@@ -1,0 +1,917 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
+<html>
+  <script language="JavaScript" type="text/javascript">
+    <!--
+	function sizeTbl2(h,i) {
+	var tbl = document.getElementById(i);
+	tbl.style.display = h;
+	}
+	// -->
+  </script> 
+  
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>TD2 - Phylogénie</title>
+    <link rel="stylesheet" type="text/css" href="course.css" />
+  </head>
+  
+  
+  <body>
+    
+    <p class="header">AMU    &nbsp;::   Sciences et Humanités - L2   &nbsp;::    Nature et culture   &nbsp;::    année 2018/2019</p>
+    
+    <h1 class='title'>Inférence phylogénétique</h1>
+    <div class='attention'>
+      <p>Chaque TP est constitué d'une série d'exercices. </p>
+	  <p>Ouvrez deux fenêtres : une pour ce tutoriel et l'autre pour le QCM (questionnaire)
+	  associé au tutoriel (vous pouvez trouver le lien sur AMETICE). </p>
+	  <p>Suivez ce tutoriel et faites les exercices. Les questions qui apparaissent 
+	  au fond rose se trouvent également dans le QCM. Répondez aux questions 
+	  au fur et à mesure dans le QCM.</p>
+	  <p><b>Attention! Si vous ne suivez pas le tutoriel, les questions de QCM peuvent 
+	  être ambiguës. Ne faites pas l'impasse sur le tutoriel, c'est le cœur 
+	  de l'apprentissage dans cet enseignement.</b> </p>
+	  
+	 <p><b> Attention aux réponses libres du questionnaire : </b></p>
+	 <ul>
+		<li>Ecrivez les <b>nombres sans espace et sans virgule</b>. Par exemple : <b>9365589</b>
+		à la place de 9 365 589 ou 9,365,589</li>
+		<li>Utilisez le <b>point pour les valeurs décimales</b>. Par exemple <b>3.14</b>
+		à la place de 3,14</li>
+		<li>Si on demande un <b>pourcentage</b> écrivez uniquement le nombre <b>sans
+		le signe %</b>. Par exemple <b>30</b> à la place de 30% ou 0.3</li>
+		<li>Si on demande une <b>proportion</b> ne donnez pas la réponse en pourcentage. 
+		Par exemple écrivez <b>0.3</b> à la place de 30%.</li>
+	</ul>
+
+    </div>
+    <hr>
+    <a name='contenu'></a>
+    <h2>Contenu</h2>
+    <ol>
+      <li><a href='#prerequis'>Prérequis</a></li>
+      <li><a href='#resources'>Ressources</a></li>
+      <li><a href='#objectifs'>Objectifs</a></li>
+  
+	  <li><a href='#tree_from_ncbi'>Extraction d'un arbre pour les espèces sélectionnées</a></li>
+
+	  <li><a href='#phylogeny_opsins'>Inférence de la phylogénie des
+	  opsines chez les mammifères</a>
+	<ul>
+	  <li><a href='#phylogeny_alignment'>Alignement multiple</a></li>
+	  <li><a href='#phylogeny_curation'>Curation de l'alignement</a></li>
+	  <li><a href='#phylogeny_tree'>Construction de l'arbre</a></li>
+	  <li><a href='#phylogeny_viz'>Visualisation et interprétation de l'arbre</a></li>
+	</ul>
+      </li>
+	  <li><a href='#tree_of_life'>Exploration de l'arbre de la vie (Facultatif)</a></li>
+    </ol>
+    
+    
+    <a name='prerequis'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h2>Prérequis</h2>
+    
+    <p>Ce TD repose sur les cours suivants.
+	<h3>Cours1 - Concepts</h3>
+	<ul>
+		<li>Concepts (ana-, homo-, ortho-, para- and xénologie)</li>
+	</ul>
+    <h3>Cours5 - Phylogénie </h3>
+    </p>
+    
+    <a name='resources'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h2>Ressources</h2>
+
+    <table>
+      <tr>
+	<th>Nom</th>
+	<th>Lien</th>
+	<th>Description</th>
+      </tr>
+      
+      <tr valign='top'>
+	<td>Phylogeny.fr</td>
+	<td>
+	  <a target='_blank' href='http://www.phylogeny.fr/'>http://www.phylogeny.fr/</a>
+	  <center>ou</center>
+	  <a target='_blank' href='http://phylogeny.lirmm.fr/'>http://phylogeny.lirmm.fr/</a>
+	</td>
+	<td>Phylogeny.fr - Robust Phylogenetic Analysis For The Non-Specialist.</td>
+      </tr>
+      
+      <tr valign='top'>
+	<td>Tree of life Web Project</td>
+	<td><a target='_blank' href='http://tolweb.org/tree/'>http://tolweb.org/tree/</a></td>
+	<td>The Tree of Life Web Project (ToL) is a collaborative effort of biologists and nature enthusiasts 
+	  from around the world.
+	  ToL pages are linked one to another hierarchically, in the form of the evolutionary tree of life.
+	  Starting with the root of all Life on Earth and moving out along diverging branches to individual 
+	  species, the structure of the ToL project thus illustrates the genetic connections 
+	  between all living things. </td>
+      </tr>
+
+      <tr valign='top'>
+	<td>OneZoom</td>
+	<td><a target='_blank' href='http://www.onezoom.org/'>http://www.onezoom.org/</a></td>
+	<td>OneZoom is committed to heightening awareness about the diversity of life on 
+	earth and its evolutionary history. Here you can explore the tree of life in a
+	new way: it's like a map, everything is on one page, all you have to do is use 
+	your mouse wheel to zoom in and out </td>
+      </tr>
+
+      <tr valign='top'>
+	<td>Common Tree, NCBI</td>
+	<td><a target='_blank' href='http://www.ncbi.nlm.nih.gov/Taxonomy/CommonTree/wwwcmt.cgi'>
+	http://www.ncbi.nlm.nih.gov/Taxonomy/CommonTree/wwwcmt.cgi</a></td>
+	<td>Taxonomy based tree for a list of species</td>
+      </tr>	  
+    </table>
+    
+    <a name='objectifs'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h2>Objectifs</h2>
+
+    <p>L'objectif général de ce TD est de fournir un premier aperçu
+      des méthodes de phylogénie moléculaire, en les mettant en
+      pratique sur la base d'un cas d'étude concret.</p>
+
+    <p>Objectifs particuliers
+      <ol>
+	<li>Appliquer une ou deux méthodes d'inférence
+	  phylogénétique.</li>
+
+	<li>Apprendre à évaluer la robustesse d'un arbre
+	  phylogénétique (estimée par l'approche
+	  dite <a
+		  href='concepts.html#bootstrap'>bootstrap</a>).</li>
+
+	<li>Comprendre la relation entre un arbre des espèces et un
+	  arbre des molécules, et le principe de la réconciliation
+	  entre ces deux arbres.</li>
+      </ol>
+    </p>
+
+   
+
+    <a name='tree_from_ncbi'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Extraction d'un arbre pour les espèces sélectionnées</h3>
+    
+    <p><b>But de l'exercice:</b> extraire un arbre restreint aux
+      espèces correspondant aux opsines de votre sélection.</p>
+
+    <p>Au TD précédent (alignements multiples), nous avions
+      sélectionné 34 opsines, appartenant à 17 espèces
+      de mammifères. Nous allons construire un arbre phylogénique qui
+      reflétera le scénario le plus vraisemblable concernant
+      l'histoire évolutive de ces espèces, en nous basant sur la
+      taxonomie générale des mammifères.</p>
+
+    <p>Le site <a target='_blank' href='http://tolweb.org/tree/'>Tree
+	of life</a> utilisé ci-dessus est très convivial, et permet
+      d'obtenir des informations détaillées pour chacun des groupes
+      taxonomiques. Cependant, il n'est pas évident d'y localiser toutes
+      les espèces correspondant aux opsines de notre sélection. Pour
+      ce faire, nous allons utiliser un outil très pratique disponible
+      sur le site taxonomique du NCBI.</p>
+    
+    <div class='protocol'>
+      <ol>
+	
+	<li>Récupérez le fichier texte contenant le nom latin des
+	  espèces sélectionnées <a target='_blank'
+				   href='TD2_data_files/species_list.txt'><b>ICI</b></a>, et
+	  sauvegardez-en une copie sur votre ordinateur. </li>
+
+	<li><p>Connectez-vous à la <a target='_blank'
+				      href='http://www.ncbi.nlm.nih.gov/taxonomy'>base de données
+	      taxonomique du NCBI</a>.<p></li>
+	
+	<li><p> Dans la liste <span class='option'>Taxonomy
+	      tools</span>, cliquez sur le lien <a target='_blank'
+						   href='http://www.ncbi.nlm.nih.gov/Taxonomy/CommonTree/wwwcmt.cgi'><span
+															class='option'>Common tree</span></a>.
+	</p></li>
+	
+	
+	<li><p>
+	    A ce stade, deux alternatives s'offrent à vous. 
+	    <ol type='a'>
+	      <li>Entrer les noms d'espèces un à un dans la
+		boîte <span class='option'>Enter name or id</span>, en
+		cliquant <span class='option'>Add</span> pour chaque
+		nom. Vous verrez ainsi l'arbre se dessiner
+		progressivement. </li>
+	      <li>Entrer le fichier texte contenant la liste des
+		espèces de votre sélection. Pour cela,
+		cliquez <span class='option'>Browse (Parcourrir)</span>, localisez
+		le fichier sur votre disque dur, puis
+		cliquez <span class='option'>Add</span>. L'arbre complet devrait alors
+		apparaître.</li>
+	    </ol>
+	  </p>
+	  
+	  <p class='Tips'>Vous pouvez cacher ou afficher la lignée 
+	    taxonomique des espèces à l'aide des boutons 
+	    <span class='option'>Expand All</span> et <span class='option'>Collapse All</span> 
+	    ou en cliquant sur les signes <span class='option'>+</span> et <span class='option'>–</span> 
+	    devant les noms des taxa.<p>
+	</li>
+
+	<li><p>Cochez la case <span class='option'>include unranked taxa</span></p></li>
+
+	<p><li>Dessinez un arbre phylogénétique (sur papier) basé sur l’affichage de Comme Tree. 
+	Conservez ce dessin (et laisser la page de Common Tree ouvert) afin d'effectuer la
+	    réconciliation entre l'arbre moléculaire des opsines et
+	    cet arbre des espèces dans la dernier exercice de ce TP. </li></p>
+      </ol>
+      
+      <div class='exo'>
+	<h3>Questionnaire 1	- Extraction d'un arbre de NCBI-Taxonomy</h3>	
+	<ol>	
+	  <li><p>Quelle est l'espèce la plus proche de l'opossum à miel
+	    (<i>Tarsipes rostratus</i>) selon cet arbre&nbsp;? Au cas où
+	    plusieurs espèces seraient équidistantes, indiquez-les
+	    toutes.</p></li>
+
+	  <li><p>Quel est le plus petit groupe taxonomique qui contient 
+	  l’homme et le lapin (<i>Oryctolagus cuniculus</i>)&nbsp;?
+	  </p></li>
+	</ol>
+      </div>
+    </div>
+  
+    <a name='phylogeny_opsins'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h2>Inférence de phylogénie des opsines des mammifères</h2>
+
+    <h3>Buts de l'exercice</h3>	
+
+    <ol>
+      <li>Avoir un premier aperçu de la construction des arbres
+	phylogénétiques sur base de séquences protéiques.</li>
+      <li>Apprendre à réconcilier un arbre moléculaire avec l'arbre
+	des espèces correspondant à ces protéines.</li>
+    </ol>
+	
+	<h3>Prérequis - Evolution des opsines de mammifères</h3>
+	
+	<p>La perception des couleurs repose sur une famille de protéines 
+	spécialisées appelées opsines, qui sont exprimées dans les 
+	cellules-cônes de la rétine.</p>
+	<p>La plupart des mammifères ont une vision dichromatique, 
+	dans laquelle interviennent deux opsines: 
+	<ul>
+		<li>Opsine sensible aux ondes courtes <font color='blue'>(bleu): SWS</font>, 
+		short wavelengths-sensitive. Par simplicité cette opsine 
+		sera appelé opsine bleue même si c’est un abus de langage, 
+		car l’opsine n’a pas de couleur.</li>
+		<li>Opsine sensible aux ondes moyennes à longues 
+		 <font color='brown'>(vert - rouge) MWS/LWS</font>, medium or long wavelengths-sensitive. 
+		Le pic de sensibilité varie entre le rouge et le vert selon les 
+		espèces.  <font color='brown'>(opsine rouge/verte)</font></li>
+	</ul></p>
+	<p>La vision trichromatique est apparue chez les primates 
+	de l'Ancien Monde, du fait d'une duplication de l'opsine MWS/LWS, 
+	suivie d'une spécialisation de chacune des copies. 
+	On trouve donc chez ces espèces trois opsines: 
+	<ul>
+		<li> <font color='blue'>SWS: short wavelengths-sensitive (opsine bleue)</font></li>
+		<li> <font color='green'>MWS: medium wavelengths-sensitive (opsine verte)</font></li>
+		<li> <font color='red'>LWS: long wavelengths-sensitive (opsine rouge)</font></li>
+	</ul></p>
+	<p>Le fait que tous les mammifères possèdent l’opsine bleue 
+	et au moins une autre opsine (rouge/verte) est la conséquence 
+	d’une duplication du gène d’opsine ancestrale qui est arrivée 
+	avant l’ancêtre commun des mammifères. La présence 
+	de l’opsine rouge et opsine vert chez certains primates 
+	est la conséquence d’une duplication de gêne opsine rouge/vert
+	dans la lignée des primates.</p>
+
+	<h3>Constuction d'un arbre phylogénétique en ligne</h3>
+    <p>Le site <a target='_blank'
+		  href='http://phylogeny.lirmm.fr/'>http://phylogeny.lirmm.fr/</a>
+      permet de construire des arbres phylogénétiques à partir des
+      séquences protéiques ou nucléiques. Nous allons utiliser cet
+      outil pour construire un arbre moléculaire des opsines. Nous
+      tenterons ensuite de réconcilier cet arbre moléculaire avec
+      l'arbre des espèces que nous avons créé au début de ce TP.</p>
+
+    <p>Le site <a target='_blank'
+		  href='http://phylogeny.lirmm.fr/'>http://phylogeny.lirmm.fr/</a>
+      est particulièrement flexible: il permet de choisir, pour chaque
+      étape de l'inférence phylogénique, une méthode particulière, et
+      de régler les paramètres essentiels de chaque algorithme.  </p>
+
+    <p>La construction des arbres suit les étapes
+      suivantes.
+      <ol>
+	<li>Alignement multiple des séquences.</li>
+	<li>Curation de l'alignement. 
+	<li>Construction de l'arbre.</li>
+	<li>Visualisation et manipulations de l'arbre.</li>
+      </ol>
+
+
+    </p>
+
+
+    <a name='phylogeny_alignment'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Opsines – Alignement multiple</h3>
+
+    <div class='protocol'>
+      <ol>
+	<li><p>Récupérez le fichier (fasta) des séquences d'opsines de
+	    mammifères 
+	    <a target="_blank" href='TD2_data_files/opsines_mammiferes.fasta'><b>ICI</b></a>. 
+	</p></li>
+	
+	<li><p>Connectez-vous à Phylogeny.fr (<a target='_blank'
+						 href='http://phylogeny.lirmm.fr/'>http://phylogeny.lirmm.fr/</a>).</p></li>
+
+	<li><p>Choisissez l'option <span class='option'><b>A la
+		carte</b></span> dans
+	    l'onglet <span class='option'><b>Phylogeny
+		Analysis</b></span>.
+	</p></li>
+
+
+	<li><p>Créez un <span class='option'>workflow</span>
+	    (organigramme, c'est-à-dire une description graphique de
+	    l'enchaînement entre programmes bioinformatiques) en
+	    cochant/décochant les cases de chaque étape et en
+	    choisissant les logiciels pour chaque étape sélectionnée.</p>
+	  
+	  <p class="tips">Dans un premier temps, laissez toutes les
+	    options par défaut. Quand vous aurez acquis de
+	    l'expérience, vous pourrez modifier les paramètres pour
+	    analyser leur impact sur la topologie des arbres.
+	</p></li>
+
+	<li><p>Sélectionnez l'option <span class='option'><b>Step by
+		step</b></span> pour pouvoir examiner les résultats de
+	    chaque étape.
+	  <p class='tips'>Nous utilisons l'option "pas à pas" pour
+	    pouvoir explorer les paramètres et analyser les résultats
+	    intermédiaires à chaque étape. Quand vous aurez acquis une
+	    maîtrise suffisante de l'inférence phylogénétique, vous
+	    pourrez utiliser l'option <span class='option'>all at
+	      once</span>, qui fera tourner toutes les analyses et vous
+	    avertira par courriel de la complétion de la tâche.</p>
+	</p></li>
+
+	<li><p>Créez le workflow
+	    (bouton <span class='option'><b>Create
+		Workflow</b></span>)</p></li>
+
+	<li><p>Cliquez sur <span class='option'>Browse</span> pour
+	    charger votre fichier fasta sur le site Phylogeny.fr, ou
+	    (si vote fichier est de taille raisonnable) copiez les
+	    séquences dans la fenêtre prévue.</p></li>
+	
+	<li><p>Nous vous suggérons d'indiquer
+	    votre <span class='option'>courriel</span>, afin de
+	    recevoir un courriel de notification des
+	    résultats.</p></li>
+	
+	<li><p>Lancez l'analyse en cliquant sur le
+	    bouton <span class='option'><b>submit</b></span>.</p></li>
+
+	<div class="tips">
+	  <ul>
+	    <li><p>Vous pouvez ignorer les éventuels messages
+		d'avertissement (warnings) "sequence #1 name is too long
+		(greater or equal to 80 characters)"</p></li>
+	    
+	    <li>Le site Web affiche des onglets
+		correspondant à chaque étape du workflow. Chaque fois
+		qu'une étape est terminée, le lien "Res." devient actif
+		dans l'onglet.</p></li>
+	  </ul>
+	</div>
+
+	<li><p>Cliquez sur le lien <span class='option'>Res.</span> de
+	    l'onglet Alignement. Vérifiez l'alignement pour éliminer
+		éventuellement quelques séquences qui s'alignent mal.</p>
+		
+	  <div class='tips'>
+	  <p>Quand le fichier de séquence contient quelques séquences
+	    très éloignées, la tâche d'alignement multiple est
+	    particulièrement difficile. Ces séquences nuisent à la
+	    fiabilité de l'alignement, et, indirectement, à
+	    l'inférence d'un arbre moléculaire. Il est préférable de
+	    les éliminer avant la construction d'un arbre
+	    phylogénétique. Dans le cas des opsines, la conservation
+	    est suffisamment bonne, et couvre l'ensemble des
+	    séquences. Nous pouvons donc travailler avec l'ensemble
+	    des séquences que nous avons collectées.</p>
+      </div>
+		</li>
+	
+	<li><p>Au bas de la page de résultats de l'alignement, cliquez
+	    <span class='option'><b>Next Step</b></span> pour
+	    passer à l'étape suivante.</p></li>
+      </ol>
+    </div>
+
+
+    <a name='phylogeny_curation'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Opsines – Curation de l'alignement</h3>
+
+    <div class='protocol'>
+      <ol>
+
+	<li><p>Nous passons maintenant à l'étape dite de
+	    <span class='concept'>curation</span>. Cette étape est
+	    optionnelle. Elle permet de "nettoyer" l'alignement
+	    multiple, pour n'en retenir que
+	    les <span class='concept'>sites</span> (colonnes de
+	    l'alignement) pertinents pour l'inférence phylogénétique
+	    qui suivra.</p>
+	
+		<div class='tips'>
+		<p>Dans un alignement multiple la position des gaps 
+		est souvent ambiguë, si les séquences ne sont pas 
+		fortement conservées. Pour cette raison, il est préférable 
+		de se baser sur les blocks (colonnes contiguës dans l’alignent) 
+		sans gap pour inférer des arbres phylogénétiques. <br>
+		Le logiciel Gblock ne fait pas qu'enlever les colonnes 
+		de l’alignement avec gaps, mais il élimine aussi les 
+		blocks sans gap trop courts, car ces positions se 
+		trouvent dans une région de l’alignent relativement peu fiable.</p>
+		</div>
+	</li>
+
+
+	<li><p>Le site Phylogeny.fr vous propose de changer
+	    les paramètres par défaut pour appliquer des conditions
+	    plus ou moins exigeantes ("stringent" en anglais) à la
+	    sélection des <span class='concept'>sites</span> (colonnes
+	    de l'alignement) qui seront pris en compte lors de la
+	    construction de l'arbre.</p></li>
+	  
+	<li><p>Laissez tous les paramètres par défaut, et
+	    cliquez <span
+		       class='option'><b>submit</b></span>.</p>
+	</li>
+    </ol>
+
+      <div class='tips'>
+	<p>Au terme de la curation, l'interface Web vous présente
+	  <ol>
+	    <li>un alignement coloré (fenêtre <b>Gblocks 0.91b
+		Results</b>). Sur l'alignement multiple après
+	      curation, les colonnes de l'alignement retenues pour
+	      l'inférence de l'arbre sont soulignées en
+	      bleu.</li>
+	    <li>Une série de liens vers les fichiers d'entrée et
+	      de sortie.
+	      <ul>
+		<li>Le fichier "Input raw alignment" contient
+		  l'alignement produit par Clustalw (ce résultat
+		  est fourni dans un format légèrement différent,
+		  appelé "Phylip". Notez que cet alignement
+		  contient des gaps.</li>
+		<li>Le fichier "Cured alignment in PHYLIP Format"
+		  est limité aux colonnes qui ont été retenues au
+		  terme du processus de curation, et qui serviront
+		  pour les étapes ultérieures.</li>
+	      </ul>
+	    </li>
+	    <li>Au bas de la page, le
+	      bouton <span class='option'>Start jalview</span> vous
+	      permet de visualiser l'alignement de façon
+	      dynamique.</li>
+	    <li>L'arbre guide est affiché. 
+	      <ul><p>Rappel:
+		  l'<a
+		       href='concepts.html#arbre_guide'>arbre-guide</a>
+		  n'est qu'un outil utilisé temporairement pour
+		  construire l'alignement, il ne peut pas être
+		  interprété comme une inférence de l'histoire
+		  évolutive de la famille des opsines.</p>
+	      </ul>
+	    </li>
+	    <li>Une liste de liens vers les fichiers de résultats, en
+	      différents formats.</li>
+	  </ol>
+	</p>
+
+      </div>
+
+      <div class='exo'>
+	<h4>Questionnaire 2 - Curation de l'alignement </h4>	
+	<ol>
+	  <li><p>Quelle est la longueur totale de
+	      l'alignement  des opsines de mammifères &nbsp;?</p></li>
+
+	  <li><p>Combien de colonnes (positions) de l'alignement
+	      ont été retenues pour l'inférence
+	      phylogénétique&nbsp;? ("New positions")
+	  </p></li>
+	  
+	  <li><p>Indiquez la position du bloc le plus long retenu par 
+	  Gblock. Donnez la position de début et la fin dans l’alignement complet. </p></li>
+
+	</ol>
+      </div>
+
+    </div>
+
+
+
+    <a name='phylogeny_tree'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Opsines – Construction et manipulation de l'arbre</h3>
+
+    <div class='protocol'>
+      <ol>
+	<li><p>Au bas de l'onglet <span class='option'>Curation
+	      Res</span>, cliquez sur le
+	    bouton <span class='option'>Next step</span>. Ceci vous
+	    amène à l'onglet <span class='option'>Phylogeny
+	      Set</span>.</p></li>
+
+	<li><p>Choissiez <span class='option'>SH-like</span> dans le menu 
+		<span class='option'>Approximate Likelihood-Ratio Test (aLRT)</span>. 
+		
+	    <div class='tips'>
+		<ul>
+	      <li>L'option de bootstrap est fort utile pour mesurer la
+		robustesse de votre arbre, mais elle est gourmande en
+		temps.</li>
+		<li>Ils existent des méthodes alternatives pour évaluer la 
+		robustesse des branches, qui sont plus rapides que le bootstap, 
+		mais moins précises.</li>
+		</ul>
+
+	    </div>
+	</p></li>
+
+	<li><p>Laissez les autres paramètres inchangés, et lancez la
+	    construction de l'arbre phylogénétique en
+	    cliquant <span class='option'>Submit</span>. </p>
+	  <p class='tips'>Cette tâche peut prendre quelques minutes,
+	    le moment est sans doute venu de prendre une pause.</p>
+	</li>	
+	
+
+	<div class='tips'>
+	  <p>Après quelques minutes, la page de résultats
+	    s'affiche. L'arbre phylogénétique s'affiche dans un
+	    format très simple, qui ne permet pas de le manipuler
+	    directement (par exemple pour pivoter les branches,
+	    renommer les séquences, enraciner l'arbre, ...).
+		</p>
+	</div>
+
+	<li><p>Cliquez sur <span class='option'>Next step</span> puis sur 
+	<span class='option'>Submit</span> pour pouvoir
+	modifier votre arbre.</p></li>	
+	
+	<div class='tips'>
+		<p>Votre arbre apparaît en haut de la page.</p>
+	    <ul>
+	      <li>En dessous de cette figure, la page de résultats vous
+		présente une série d'options que vous pouvez modifier afin
+		d'adapter le dessin en fonction des résultats, et de vos
+		goûts personnels.</li>
+	      <li>Vous pouvez également exporter le résultat sous
+		différents formats, qui vous permettront de les
+		ouvrir avec des logiciels de visualisation et
+		de manipulation d'arbres phylogénétiques. </li>
+	    </ul>
+	  </p>
+	</div>
+
+	<li><p>Prenez le temps de découvrir les différentes
+	    manipulations possibles avec l'arbre.</p></li>
+
+	<li><p>Coloriez quelques branches de couleurs différentes,
+	    pour pouvoir bien comprendre l'effet des options qui
+	    changent l'affichage des branches.</p></li>
+      </ol>
+      <div class='exo'>
+	<h4>Questionnaire 3 - Construction et manipulation de l'arbre</h4>	
+	<ol>
+	  <li><p>Quelle option permet de colorier une branche&nbsp;?</p></li>	
+	  <li><p>Quelle option permet de pivoter la descendance complète d'une branche (image miroir) ?
+	  </p></li>
+	  <li><p>Quelle option permet de pivoter les deux branches descendant d'une branche donnée ?
+	  </p></li>	  
+	  <li><p>Quelle option permet d'enraciner l'arbre&nbsp;?</p></li>	
+	  <li><p>Quelle option permet de changer la topologie de l'arbre&nbsp?</p></li>
+	  <li><p>Explorez les options des différents styles d'arbres
+	      (<span class='option'>Tree conformation</span>).
+	      Changent-elles la topologie de l'arbre&nbsp;?</p></li>
+	</ol>
+      </div>
+    </div>
+
+    <a name='phylogeny_viz'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Opsines – Visualisation et interprétation de l'arbre</h3>
+
+    <div class='protocol'>
+      <ol>
+	<!--
+	    <li><p>Enracinez votre arbre.</p></li>
+	    -->
+	
+	<li><p>Utilisez le
+	    format <a
+		      href='concepts.html#cladogramme'>cladogramme</a> en
+	    activant l'option <span class='option'>Ignore branch
+	      length</span>.</p></li>
+	
+	<li><p>Enracinez votre arbre basé sur les <a href='#phylogeny_opsins'>information 
+	données au début de l’exercice</a>.</p></li>
+	<li><p>Colorez les branches de votre arbre de manière à
+	    associer les couleurs rouge, verte et bleue en accord avec
+	    les types d'opsines.
+	    <div class='tips'>
+	      <ul>
+		<li><p>Pour colorer une branche, sélectionnez d'abord une
+		  couleur (option <span class='option'>Dynamic Tree
+		    Edition &gt; Color &gt; using color</span>), puis
+		  cliquez sur l'icône carrée
+		  devant <span class='option'>Color</span>, remontez sur
+		  le graphique de l'arbre, et cliquez sur la branche que
+		  vous voulez colorer.</p></li>
+		<li><p>Utilisez la couleur <b>brune</b> pour marquer les opsines pour
+		  lesquelles la distinction entre vert et rouge n'est pas
+		  établie. Pour la majorité des mammifères il y a un seul gène qui code
+		  pour l'opsine verte/rouge. Même s'il sont annotés comme opsines rouge 
+		  ou verte coloriez-les en brun et utilisez les couleur verte et rouge
+		  que pour les primates, qui possèdent 2 gènes, un pour le rouge, 
+		  l'autre pour le vert</p></li>
+		<li><p>Pour mieux voir le détail des branchements les plus
+		  récents, activez
+		  l'option <span class='option'>Ignore branch
+		    lengths</span>. Ceci affichera le résultat sous
+		  forme
+		  de <a
+			href='concepts.html#cladogramme'>cladogramme</a>,
+		  ce qui facilitera grandement le coloriage des
+		  branches de l'arbre. Vous pourrez ensuite revenir au
+		  mode <a
+			  href='concepts.html#phylogramme'>phylogramme</a>
+		  pour sauvegarder le résultat final.</p></li>
+		<li><p>De manière générale, nous vous recommandons de
+		  sauvegarder systématiquement les résultats de vos
+		  analyses phylogéniques sous les deux formes
+		  (cladogramme et phylogramme), car ces modes de
+		  visualisation sont complémentaires.</p></li>
+	      </ul>
+	    </div>
+	</li>
+	<!--	
+	<li><p>Dans une fenêtre séparée, ouvrez l'arbre des espèces que
+	  vous aviez généré sur l'outil <span class='program'>Common
+	    tree</span> du site taxonomique du NCBI. 
+		Comparez cet arbre des espèces avec la branche bleue et puis avec la 
+		branche rouge/verte de votre arbre inféré. Notez particulièrement, si
+		la position des groupes des monotrèmes, primates et eutheria est correcte
+		dans l'arbre inféré.</p></li>
+J'ai ajouté quelques étiquette et ensuite le programme a refusé d'ajouter plus&nbsp;???? Bizarre-->
+
+      </ol>
+
+      <div class='exo'>
+	<h4>Questionnaire 4 - Interprétation des l'arbres</h4>
+	
+	<div class='tips'>
+	<b>Au cas de problème avec le site phylogeny.fr, analysez l’arbre de PhyML qui se trouve <a href=
+	"TD2_data_files/OPN_RVB_PhyML.png" target='_blank'>ICI</a> </b>
+	</div>
+	<ol>
+	  <li><p>L'événement le plus ancien dans l'arbre est-il une
+	      duplication ou une spéciation&nbsp?</p></li>
+
+	  <li><p>Le temps de divergence entre les opsines bleue et
+	      rouge de l'ornithorynque est-il plus grand, plus petit
+	      ou égal au temps de divergence entre l'opsine bleue de
+	      l'ornithorynque et l'opsine rouge de l'homme&nbsp?</p></li>
+
+	  <li><p>Comparez la position des monotrèmes, marsupiaux et euthériens 
+	  dans la <b>branche de l'opsine bleue</b> de votre <b>arbre PhyML</b> 
+	  avec l'arbre que vous avez construit à l'aide de NCBI-Taxonomy 
+	  (<b>arbre de référence</b>). Les positions de ces taxa sont-elles cohérentes entre les arbres ?</p>
+	  
+	  <div class='tips'>
+		<p><b>Pour rappel:</b></p>
+		<ul>
+			<li>Monotrèmes
+				<ul>
+					<li>Ornithorhynchus anatinus</li>
+					<li>Tachyglossus aculeatus</li>
+				</ul>
+			</li>
+			<li>Marsupiaux
+				<ul>
+					<li>Monodelphis domestica</li>
+					<li>Thylamys elegans</li>
+					<li>Macropus eugenii</li>
+					<li>Tarsipes rostratus</li>
+					<li>Setonix brachyurus</li>
+				</ul>
+			</li>
+			<li>Euthériens
+				<ul>
+					<li>Felis catus</li>
+					<li>Pteropus alecto</li>
+					<li>Oryctolagus cuniculus</li>
+					<li>Papio anubis</li>
+					<li>Macaca fascicularis</li>
+					<li>Homo sapiens</li>
+					<li>Mus musculus</li>
+					<li>Rattus norvegicus</li>
+					<li>Bos taurus</li>
+					<li>Sus scrofa</li>
+				</ul>
+			</li>
+		</ul>
+	  </div>
+	  </li>
+	  <li><p>Comparez la position des monotrèmes, marsupiaux et 
+	  euthériens dans la <b>branche de l'opsine rouge/verte</b> de votre <b>arbre 
+	  PhyML</b> avec l'arbre que vous avez construit à l'aide de NCBI-Taxonomy 
+	  (<b>arbre de référence</b>).  Les positions de ces taxa sont-elles cohérentes 
+	  entre les arbres ? Ignorez les branches des opsines vertes des primates 
+	  (Homo_MWS, Macaca_MWS, Papio_MWS) pour cette question.</p></li>
+	  
+	  
+	  <p>Selon l’introduction la vision trichromatique des certains 
+	  primates est apparue, du fait d'une duplication de l'opsine MWS/LWS. 
+	  <b>Comparez la position des opsines vertes (MWS) et rouges (LWS) des 
+	  primates (Homo, Macaca, Papio)</b> dans <b>l'arbre PhyML</b> et dans L'arbre
+	  ci-dessous construit par le méthode de <b>Neigbour Joining (NJ):</b>
+	  
+	  <p><a target='_blank'  href='TD2_data_files/NJ_OPNRV_mammiferes.png'>
+	<img border='2' width="500" src='TD2_data_files/NJ_OPNRV_mammiferes.png'
+	     alt='Neighbor joining, opsines rouges et vertes des mammifères'
+	     title='NJ'/>
+      </a></p>
+
+	  
+	  <b>Répondez par VRAI ou FAUX. </b></p>
+	  
+	  <li><p>L’arbre NJ reflète clairement la duplication qui est à 
+	  l’origine de la branche verte et de la branche rouge des opsines chez 
+	  les primates.</p></li>
+	  <li><p>Dans l’arbre NJ les opsines rouge des primates forment un clade, 
+	  les opsines vertes des primates aussi.</p></li>
+	  <li><p>Dans l’arbre NJ l’ensemble des opsines vertes et rouges des primates forment un clade.</p></li>
+	  <li><p>Dans l’arbre PhyML les opsines rouge des primates forment un clade 
+	  et les opsines vertes des primates aussi.</p></li>
+	  <li><p>Dans l’arbre PhyML les opsines vertes des primates apparaissent en 
+	  position basale parmi les opsines rouges/vertes des mammifères 
+	  et elles sont séparées des opsines rouge des primates par des opsines des non-primates.</p></li>
+	  <li><p>L’arbre PhyML reflète mieux l’évolution des opsines vertes et rouge des primates que l'arbre NJ.</p></li>
+	  
+	</ol>
+      </div>
+    </div>      
+
+	
+	    <a name='tree_of_life'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Exploration de l'arbre de la vie (Faculatif)</h3>
+
+    <p>
+      Le site Web <a target='_blank'
+		     href='http://tolweb.org/tree/'>Tree of life
+	project</a> regroupe des informations
+      phylogénétiques basées sur une revue étendue de
+      la littérature scientifique, et permet d'explorer
+      les ramifications de façon interactive. L'arbre
+      de la vie présenté sur ce site est basé sur de
+      nombreuses études, combinant critères
+      morphologiques, anatomiques, physiologiques et
+      phylogénie moléculaires. Il représente le
+      scénario le plus vraisemblable concernant
+      l'histoire évolutive des espèces. Nous le
+      considérerons ci-dessous comme
+      un <span class="concept">arbre de
+	référence</span> ("arbre vrai").
+    </p>
+    
+
+    
+    <div class='protocol'>
+      <ol>
+	<li><p>Connectez-vous au site de <a target='_blank'
+					    href='http://tolweb.org/tree/'>Tree of life
+	      project</a>.</p>
+    	  
+	<li><p>Cliquez sur l'image de la grenouille. Vous arrivez sur
+	    un page qui contient l'arbre des vertébrés terrestres.
+	    Cet arbre sera votre point de départ.  Vous pouvez
+	    remonter dans l'arbre vers la racine (en cliquant sur la
+	    racine), ou descendre en cliquant sur une feuille.</p></li>
+	<li><p>A partir de ce point de départ, naviguez dans l'arbre
+	    pour atteindre l'ordre des mammifères (<a target='_blank'
+						      href='http://tolweb.org/Mammalia/15040'>http://tolweb.org/Mammalia/15040</a>).
+	</li>
+	<li>Descendez ensuite dans l'arbre en cherchant le chemin qui
+	  mène au gorille (<i>Gorilla gorilla</i>).</li>
+    
+
+      <div class='exo'>
+	<h3>Questionnaire - L'arbre de la vie - Tree of life</h3>	
+	<ol>
+	  <!--	  <li>Dans quelle branche avez-vous placé la racine&nbsp;?</li>-->
+	  <li><p>Au cours de votre parcours depuis les mammifères
+	    jusqu'à <span class="org">Gorilla gorilla</span>, vous avez
+	    rencontré des espèces notées d'une
+	    croix <img src='TD2_data_files/extinct.gif'>. Qu'indique
+	    ce symbole&nbsp?</p></li>
+		<li><p>Dans l’arbre des <i>Hominidae</i> la branche des Australopithèques 
+		est indiquée par trois traits fins à la place d’une
+		ligne épaisse. Qu'indique ce symbole&nbsp?</p></li>
+	  <li><p>Quel est(sont) le(s) genres le(s) plus proche(s)
+	  du genre <i>Gorilla</i> dans l'arbre de la vie&nbsp;?
+	  
+		<p class='tips'>Le nom latin des espèces est 
+		composé de deux mots : Le premier fait référence au 
+		genre (genus) est le deuxième précise l’espèce 
+		à l’intérieurs du genre. Par exemple, le nom latin 
+		du chimpanzé est <i>Pan troglodytes</i>. <i>Pan</i>
+		est le nom de genre. Il y a deux espèces dans ce genre : 
+		<i>Pan troglodytes</i>, le chimpanzé et 
+		<i>Pan paniscus</i>, le bonobo.</p>
+
+	  </p></li>
+	  </ol>
+	 </div>
+	 
+	  <li>Naviguez dans l'arbre pour atteindre la sous-famille <i><b>Murinae </b></i>.
+		<p class='tips'>Vous pouvez chercher la lignée de groupe <i>Murinae</i>
+		dans la Base de Données 
+		<a href='http://www.ncbi.nlm.nih.gov/taxonomy' target='_blank'>NCBI-Taxonomy</a> 
+		pour pouvoir plus facilement vous orienter dans le  Tree of Life. </p>
+	  </li>
+	  
+	  <div class='exo'>
+	  <h3>Questionnaire - L'arbre de la vie - Tree of life</h3>
+	  <ol start='4'>
+	  <li><p>Parmi les <a href="concepts.html#arbres">clades</a> 
+	  représentés dans l’arbre des <i>Murinae</i>, quel groupe 
+	  peut être utilisé comme groupe extérieur ?</p></li>
+	  <li><p>Quel est le groupe frère (le groupe le plus proche) de <i>Malaconyimi</i> ?</p></li> 
+	  <li><p>Peut-on considérer le groupe "<i>Rattinii</i>  et <i>Phloeomyini</i>" comme un <a href='concepts.html#arbres'>clade</a>&nbsp;? 
+	    Justifiez votre réponse.</p></li>
+	</ol>
+      </div>
+	  </ol>
+    </div>
+ 
+
+</div class='protocol'>		
+
+
+<!--Je pense que c'est exo est trop compliqué pour les étudiants. 
+    Si tu veux vraiment l'inculre, alors il faut les instructions très détaillés.
+
+    
+    <a name='ensemble'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h2>L'arbre de molécules de la famille des opsines d'Ensembl</h2>
+    
+
+    <h3>But de l'exercice</h3>
+    <div class='protocol'>
+      <ol>
+	<li><p>Dans <a target='_blank' href='http://www.ensembl.org/index.html'>Ensemble genome browser</a>, 
+	    identifiez le gène de l'opsine verte humain et affichez l'arbre des molécules associé.</p></li>
+	<li><p>Comparez cet arbre avec l'arbre que vous avez créé dans l'exercice précédent.</p></li>
+      </ol>
+      <div class='exo'>
+	<h3>Questionnaire - </h3>
+	<ol>
+	  <li><p>Résumez l'histoire évolutive de l'apparition de la vision 
+	      trichromatique chez les primates.</p></li>
+	</ol>	
+      </div class='exo'>	
+    </div class='protocol'>		
+    -->
+
+<a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+
+<address>
+  <a target='_blank' href='http://www.imbe.fr/~emeglecz/'>Emese Meglécz</a> 
+  (<a target='_blank' href='http://www.imbe.fr/'>IMBE</a>, 
+  <a target='_blank' href='http://www.univ-amu.fr'>Aix-Marseille Université</a>)
+  & 
+  <a target='_blank' href='http://jacques.van-helden.perso.luminy.univmed.fr/'>Jacques van Helden</a> 
+  (<a target='_blank' href='http://tagc.univ-mrs.fr/'>TAGC</a>, 
+  <a target='_blank' href='http://www.univ-amu.fr'>Aix-Marseille Université</a>).
+</address>
+</html>
+
+
+
