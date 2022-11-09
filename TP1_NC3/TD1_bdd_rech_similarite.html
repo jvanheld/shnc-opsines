@@ -7,7 +7,7 @@
   
 
   <body>
-    <p class="header">AMU    &nbsp;::   Sciences et Humanités - L2   &nbsp;::    Nature et culture   &nbsp;::    année 2018/2019</p>
+    <p class="header">AMU    &nbsp;::   Sciences et Humanités - L2   &nbsp;::    Nature et culture   &nbsp;::    année 2022/2023</p>
     
     <h1>Phylogénie moléculaire - TD1<br>Bases de données et recherche par similarité de séquences</h1>
 
@@ -187,7 +187,7 @@
     <div class="tips">
       <h3>Tips</h3>
       <ol>
-	<li><p>Comme pour les autres bases de données, il est vivement
+	<li><p>Il est vivement
 	  recommandé d'utiliser les <b>requêtes structurées</b>
 	  (<span class="option">Advanced search</span>), pour formuler une requête initiale
 	  ou pour la raffiner progressivement.</p></li>
@@ -234,17 +234,16 @@
 	<li><p><b>Requête naïve</b>
 	    <br>Dans la boîte de requêtes (en haut de la page), tapez les
 	    mots-clés suivants pour sélectionner les opsines du chat (<i>Felis catus</i> en latin) : 
-	    par exemple <tt>Felis catus opsin</tt>. Combien de résultats
+	   <tt>Felis catus opsin</tt>. Combien de résultats
 	    obtenez-vous  ?
 
 	</p></li>
 
 	<li><p>Vous pouvez <b>sélectionner des champs à afficher dans le tableau de résultats.</b>
-	    <br>Cliquez sur le le bouton <b>Columns</b>. 
+	    <br>Cliquez sur le le bouton <b>Customize columns</b>. 
 		Vous trouverez tous les champs possibles à afficher regroupés par catégories.
 		Affichez le nom de l'espèce, l'identifiant Taxonomique de l'espèce (Organism ID) 
 		et sa lignée (Taxonomic lineage), la longueur et la fonction de la séquence et le nom de la protéine. </p>
-		<p>Enregistrez ce reglage (<b>Save</b>)</p>
 
 	    <p>La table de résultats est mise à jour, avec l'ajout de
 	      colonnes indiquant les informations que
@@ -256,30 +255,26 @@
 	<li><p><b>Requête structurée</b>
 	    <ul>
 	      <li>Cliquez sur <b>Advanced</b> à côté de la boîte de recherche.</li>
-		  <li>Effacez vos termes de recherche précédents en cliquant sur 
-		  les petites poubelles à côté des boîtes.</li>
-	      <li>Dans le champ <b>All</b>, sélectionnez <i>Organism
-		  [OS]</i>, et commencez à taper les lettres de nom de
+		  <li>Sélectionnez le champ <b>Protein name [DE]</b> dans le premier 
+		  menu déroulant et entrez <tt>opsin</tt> dans la case à côté. </li>
+		  <li>Notez l'opérateur
+		logique <b>AND</b> en début de ligne suivante (il correspond à
+		nos besoins, mais pour d'autres requêtes nous pourrions
+		utiliser <b>NOT</b> ou <b>OR</b>.</li>
+		  <li>Sélectionnez <b>Organism
+		  [OS]</b> dans le deuxième menu, et commencez à taper les lettres de nom de
 		l'espèce en latin : <tt>Felis catus</tt>. Au fil de votre
 		encodage, l'interface Uniprot affiche un menu de plus en
 		plus restreint, avec la liste des organismes
 		correspondant à ce que vous avez
-		tapé. Sélectionnez <i>Felis catus [9685]</i> et
+		tapé. Sélectionnez <tt>Felis catus (Cat) [9685]</tt> et
 		cliquez sur <b>Search</b> pour lancer la recherche.
 		<p class='tips'> 9685 est l'identifiant taxonomique de l'espèce <i>Felis Catus</i></p>
-		Nous avons obtenu 41254 séquences (2/11/2018), dont 224 ont été annotées par un être
+		
+		<li>Nous avons obtenu 8 séquences (9/11/2022), dont 2 ont été annotées par un être
 		humain (Swiss-Prot)</li>
-	      <li>Pour ajouter un filtre de sélection, cliquez à
-	      nouveau sur <b>Advanced</b>.</li>
-	      <li>Notez l'opérateur
-		logique <i>AND</i> en début de ligne (il correspond à
-		nos besoins, mais pour d'autres requêtes nous pourrions
-		utiliser <i>NOT</i> ou <i>OR</i>.</li>
-	      <li>Sélectionnez le champ <i>Protein name
-		  [DE]</i>, entrez <tt>opsin</tt> et lancez la recherche. La
-		  sélection correspond-elle mieux à vos attentes
-		  ?</li>
-	      <li>Lisez attentivement la requête structurée qui
+		
+	    <li>Lisez attentivement la requête structurée qui
 		apparaît dans la boîte de requête. 
 		L'interface interactive convertit
 		automatiquement vos requêtes en une phrase que vous
@@ -287,9 +282,7 @@
 		ultérieurement.  </li>
 	      <li>Vous pouvez facilement sélectionner les protéines de
 		Swiss-prot, en cliquant sur <b>reviewed (2)</b>, en haut
-		à gauche. Notez
-		la modification de la formule syntactique pour la
-		requête stucturée.</li>
+		à gauche.</li>
 	    </ul>
 	</p></li>
 
@@ -323,15 +316,17 @@
 		protéines peuvent varier selon la requête effectuée):
 
 		<pre>
->sp|O18914|OPSR_CANFA Long-wave-sensitive opsin 1 OS=Canis familiaris GN=OPN1LW PE=2 SV=2
-MTQRWGPQRLAGGQPQAGLEESTQASIFTYTNSNATRDPFEGPNYHIAPRWVYHLTSAWM
-IFVVIASVFTNGLVLVATMRFKKLRHPLNWILVNLAIADLAETIIASTISVVNQIYGYFV
-LGHPLCVVEGYTVSLCGITGLWSLAIISWERWLVVCKPFGNVRFDAKLAIAGIAFSWIWA
-AVWTAPPIFGWSRYWPHGLKTSCGPDVFSGSSYPGVQSYMIVLMTTCCIIPLSVIILCYL
-QVWLAIRAVAKQQKESESTQKAEKEVTRMVVVMVLAYCLCWGPYTFFACFAAAHPGYAFH
-PLVAALPAYFAKSATIYNPIIYVFMNRQFRNCILQLFGKKVDDSSELSSASRTEASSVSS
-VSPA
->sp|O18913|OPSR_FELCA Long-wave-sensitive opsin 1 OS=Felis catus GN=OPN1LW PE=2 SV=2
+>sp|Q5YKK9|OPN4_FELCA Melanopsin OS=Felis catus OX=9685 GN=OPN4 PE=2 SV=1
+MNPPSGPRTQEPSCVATPASPSRWDGYRSSTSSLDQPLPISPTAARAQAAAWIPFPTVDV
+PDHAHYTLGTVILLVGLTGILGNLMVIYTFCRSRGLRTPANMFIINLAVSDFFMSFTQAP
+VFFASSLHKRWLFGEAGCEFYAFCGALFGITSMITLMAIALDRYLVITHPLATIGVVSKR
+RAALVLLGVWLYALAWSLPPFFGWSAYVPEGLLTSCSWDYMSFTPSVRAYTMLLFCFVFF
+LPLLVIVYCYIFIFRAIRETGQALQTFRACEGGGRSPRQRQRLQREWKMAKIELLVILLF
+VLSWAPYSIVALMAFAGYAHVLTPYMNSVPAVIAKASAIHNPIIYAITHPKYRMAIAQHL
+PCLGVLLGVSGQHTGPYASYRSTHRSTLSSQASDLSWISGRRRQASLGSESEVGWMDTEA
+AAVWGAAQQVSGRFPCSQGLEDREAKAPVRPQGREAETPGQAMTMAMAPWDTPANCELPL
+HPGWAFH
+>sp|O18913|OPSR_FELCA Long-wave-sensitive opsin 1 OS=Felis catus OX=9685 GN=OPN1LW PE=1 SV=2
 MTQRWGPQRLAGGQPHAGLEDSTRASIFTYTNSNATRGPFEGPNYHIAPRWVYHVTSAWM
 IFVVIASVFTNGLVLAATMKFKKLRHPLNWILVNLAVADLAETIIASTISVVNQIYGYFV
 LGHPMCVLEGYTVSLCGITGLWSLAIISWERWLVVCKPFGNVRFDAKLAIAGIAFSWIWA
@@ -350,10 +345,10 @@ VSPA
 		    <li>Le premier mot de la ligne de description (ce
 		      qui précède le premier espace) est l'identifiant de
 		      la séquence (par
-		      exemple <tt>sp|O18914|OPSR_CANFA</tt>). </li>
+		      exemple <tt>sp|Q5YKK9|OPN4_FELCA</tt>). </li>
 		    <li>La ligne de description peut éventuellement
 		    contenir des commentaires libres (pour la première séquence ci-dessus: 
-		      <tt>Long-wave-sensitive opsin 1 OS=Canis familiaris GN=OPN1LW PE=2 SV=2</tt>).</li>
+		      <tt>Melanopsin OS=Felis catus OX=9685 GN=OPN4 PE=2 SV=1</tt>).</li>
 			</ul>
 		</div>
 		</li>
@@ -367,6 +362,7 @@ VSPA
 		<p>Sélectionnez le champ <b>Taxonomy[OC]</b> pour trouver des 
 		séquences d'un groupe d'organismes</p>
 		<p>Utilisez la complétion automatique</p>
+		<p>Les questions ci-dessous décomposent la tâche en plusieurs étapes.</p>
 		</div>
 	</li>
 
@@ -378,7 +374,7 @@ VSPA
     <ol>
 	      <li>En formulant une requête structurée (<b>Advanced
 	      search</b>), combien de <b>protéines</b> (pas seulements les opsines) trouvez-vous pour
-	      l'orde des <b>rongeurs</b> (<i>Rodentia</i>) dans Uniprot ?</li>
+	      l'orde des <b>rongeurs</b> (l'identifiant taxonomique de <i>Rodentia</i> est 9989) dans Uniprot ?</li>
 		  
 	      <li>Combien <b>d'opsines</b> trouvez-vous dans Uniprot (pas seulements des rongeurs) ?</li>
 	      <li>Combien <b>d'opsines</b> des <b>rongeurs</b> se trouvent dans Uniprot?</li>
@@ -648,7 +644,8 @@ VSPA
 	<li><p>Refaites tourner blastp avec la même protéine requête,
 	    en limitant cette fois la recherche aux protéines des 
 		<b><a href="http://fr.wikipedia.org/wiki/Bacillariophyta" target='_blank'>Diatomées</a> 
-		(<i>Bacillariophyta</i>)</b>. Comparez les résultats avec ceux
+		(<i>Bacillariophyta</i>)</b>. Modifiez le seuil d’Evaleur (<b>Expect threshold</b>) à <tt>10</tt>.
+		Comparez les résultats avec ceux
 	    des oiseaux.</p></li>
 		
 	 <div class='exo'>
@@ -771,7 +768,7 @@ VSPA
 	<li>Vous pouvez utiliser les paramètres par défaut des BLAST, mais</li>
 	<ul>
 	  <li><p>choisissez la banque de <b>refseq-proteins</b> et la banque <b>refseq_genomes</b>.</p></li>
-	  <li><p>limitez votre recherche à des séquences humaines dans la boite 'organism'.</p></li>
+	  <li><p>limitez votre recherche à des séquences humaines dans la boite <b>organism</b>.</p></li>
 	</ul>
       </ol>
 
@@ -785,11 +782,10 @@ VSPA
 		<p><b>Analysez l’alignement de la séquence requête avec la séquence NC_000006.12</b></p>
 		<li><p>Le premier alignement commence à la position 25113785 de la séquence de la banque. 
 		Quelle est l’unité de cette position ?</li></p>
+		<li><p>A quoi correspond le signe * dans l’alignement de région 9 (range 9) ?</li></p>
 		<li><p>Combien de régions de la séquence NC_000006.12 sont-elles alignées avec la protéine requête ?</li></p>
 		<li><p>Ces régions sont-elles homologues à une partie de la séquence requête.</li></p>
 		<li><p>A quoi ces régions correspondent-elles ?</li></p>
-		<li><p>A quoi correspond le signe * dans l’alignement de région 9 (range 9) ?</li></p>
-		<li><p>A quoi correspond GRCh38 dans la description de la séquence NC_000006.12 ?</li></p>
 		
 		<p><b>Répondez par VRAI ou FAUX</b></p>
 		
