@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>TD1 - Bases de données, aligements</title>
+    <title>TD1 - Bases de données, alignements</title>
     <link rel="stylesheet" type="text/css" href="course.css">
   </head>
   
@@ -54,10 +54,7 @@
     <a href="#contenu"><font size="-2">[Retour à la table des matières]</font></a><hr>
     <h2>Prérequis</h2>
     
-    <p>Le matériel de support est disponible ici.</p>
-      <ul>
-	<li><a target="_blank" href="https://ametice.univ-amu.fr/mod/resource/view.php?id=507578">diapos CM1</a></li>
-      </ul>
+       </ul>
 
     <p>Lors du premier cours, nous avons présenté une introduction aux
       concepts biologiques liés à la vision des couleurs, et commencé
@@ -269,7 +266,7 @@
 		correspondant à ce que vous avez
 		tapé. Sélectionnez <tt>Felis catus (Cat) [9685]</tt> et
 		cliquez sur <b>Search</b> pour lancer la recherche.
-		<p class='tips'> 9685 est l'identifiant taxonomique de l'espèce <i>Felis Catus</i></p>
+		<p class='tips'> 9685 est l'identifiant taxonomique de l'espèce <i>Felis catus</i></p>
 		
 		<li>Nous avons obtenu 8 séquences (9/11/2022), dont 2 ont été annotées par un être
 		humain (Swiss-Prot)</li>
@@ -297,7 +294,7 @@
 		  à l'aide du bouton <b>Download</b>.</li>
 	      <li>Uniprot vous permet d'exporter les résultats dans
 		divers formats. Les formats les plus pratiques pour
-		les tableaux de résultats sont <i>Tab-Delimited</i>
+		les tableaux de résultats sont <i>TSV (Tab-Delimited)</i>
 		ou <i>Excel</i>. </li>
 		<li>Choisissez la version <b>Uncompressed</b></li>
 	      <li>Exportez le tableau de résultats pour les opsines du
@@ -310,7 +307,7 @@
 	vous pouvez également sélectionner le format <b>fasta</b> (canonical) qui
 	contient les séquences. 
 	Sauvegardez le fichier sur votre
-		ordinateur, et ouvrez-le avec un éditeur de
+		ordinateur, donnez-lui un nom explicite et ouvrez-le avec un éditeur de
 		texte simple (Notepad++, gedit...). Vérifiez le format des séquences. En principe,
 		le fichier devrait ressembler à ceci (les premières
 		protéines peuvent varier selon la requête effectuée):
@@ -427,7 +424,7 @@ VSPA
 	    noms de <span name="hit" class="concept">hit</span>
 	    ou <span class="concept">HSP</span> (High Scoring Pair)
 	    pour désigner une séquence de la base de données rapportée
-	    par BLAST comme simliaire à la séquence requête.
+	    par BLAST comme similaire à la séquence requête.
 	  </li>
 	</ul>
       </div>
@@ -683,7 +680,7 @@ VSPA
 			local</a>) ? Répondez par VRAI ou FAUX</b></p>
 			<li><p>BLAST réalise les alignements globaux car il compare la séquence 
 			requête avec toutes les séquences d'une base de données.</p></li>
-			<li><p>BLAST réalise les alignements locaux car il aligne 
+			<li><p>BLAST réalise les alignements locaux car il n'aligne 
 			que des régions similaires entre deux séquences. 
 			L'alignement donc ne couvre pas nécessairement la totalité des deux séquences.</p></li>
 			<li><p>BLAST réalise les alignements locaux donc il n'est pas 
@@ -742,7 +739,8 @@ VSPA
     
     <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
     <a name='tblastn'></a><h2>Recherche des homologues de protéine CMAH (Questionnaire supplémentaire)</h2>
-    <p>Nous allons chercher les homologues de protéine CMAH du rat 
+    <p>La protéine CMAH se trouve chez certains vertébrés, comme le rat, mais est absente chez d'autres.</p>
+	<p>Nous allons chercher les homologues de protéine CMAH du rat 
       (<a target='_blank' href='http://www.uniprot.org/uniprot/F1LNX8'>F1LNX8</a>)
       chez l'homme en suivant deux stratégies&nbsp;:</p>
     <ul>
@@ -784,7 +782,7 @@ VSPA
 		Quelle est l’unité de cette position ?</li></p>
 		<li><p>A quoi correspond le signe * dans l’alignement de région 9 (range 9) ?</li></p>
 		<li><p>Combien de régions de la séquence NC_000006.12 sont-elles alignées avec la protéine requête ?</li></p>
-		<li><p>Ces régions sont-elles homologues à une partie de la séquence requête.</li></p>
+		<li><p>Ces régions sont-elles homologues à une partie de la séquence requête ?</li></p>
 		<li><p>A quoi ces régions correspondent-elles ?</li></p>
 		
 		<p><b>Répondez par VRAI ou FAUX</b></p>
