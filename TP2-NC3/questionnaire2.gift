@@ -1,0 +1,181 @@
+
+::1.0::Questionnaire 1 - Extraction d'un arbre de NCBI-Taxonomy
+
+
+::1.1::1.1 Quelle est l'espèce la plus proche de l'opossum à miel (Tarsipes rostratus) selon cet arbre ? Au cas où plusieurs espèces seraient équidistantes, indiquez-les toutes.{
+	~%50%Setonix brachyurus
+	~%-50%Thylamys elegans
+	~%50%Notamacropus eugenii
+	~%-50%Diprotodontia
+}
+
+::1.2::1.2 Quel est le plus petit groupe taxonomique qui contient l’homme et le lapin (Oryctolagus cuniculus) ?{
+	~Glires
+	=Euarchontoglires
+	~Catarrhini
+	~Boreoeutheria
+}
+
+::1.3::1.3 Parmi les deux espèces suivantes laquelle est la plus proche parente de Tarsipes rostratus : Tachyglossus aculeatus ou Felis catus ? {
+	=Felis catus
+	~Tachyglossus aculeatus
+	~Elles sont equidistantes
+}
+
+
+::2.0::Questionnaire 2 – Alignement multiple
+
+::2.1::2.1 Quelle est la longueur de la séquence la plus longue ?{#367:0}
+
+::2.2::2.2 QQuelle est la longueur de la séquence la plus courte ?{#346:0}
+
+::2.3::2.3 Quelle est la longueur de l’alignement ?{#377:0}
+
+::2.4::2.4 La longueur de l'alignement est {
+	~égale à la longueur de la séquence la plus longue.
+	=égale ou plus grande à la longueur de la séquence la plus longue.
+	~plus petite ou égale à la séquence la plus courte afin de prendre en compte uniquement les portions homologues des différentes séquences.
+	~égale au nombre d'acides aminés identiques entre toutes les séquences.
+}
+
+::2.5::2.5 Quelles sont les différences entre les séquences alignées et non alignées ?{
+	~%100%Certaines séquences alignées contiennent des gaps pour permettre de faire ressortir la similarité entre les séquences.
+	~%-33.33333%Certaines séquences sont éliminées des séquences alignées.
+	~%-33.33333%Certaines séquences sont complétées avec des acides aminés supplémentaires dans l’alignement.
+	~%-33.33333%Certains acides aminés des séquences non alignés sont éliminés pendant l’étape d’alignement.
+}
+
+::3.0::Questionnaire 3 – Curation de l'alignement multiple
+
+::3.1::3.1 Quelle est la longueur de l’alignement nettoyé ?{#313:0}
+
+::3.2::3.2 Quelle est la première position de l’alignement multiple (original) qui est retenue dans l’alignement nettoyé ?{#45:0}
+
+::3.3::3.3 Quelle est la dernière position de l’alignement multiple (original) qui est retenue dans l’alignement nettoyé ?{#371:0}
+
+::3.4::3.4 Y a-t-il des gaps dans l’alignement original entre ces positions ?{
+	~Non
+	=Oui
+}
+
+::4.0::Questionnaire 4 – Construction et manipulation de l'arbre
+
+::4.1::4.1 Quelle option permet de colorier toutes les branches qui descendent d’un nœud ?{
+	~Swap subtree
+	=All descendant branches
+	~All terminal branches
+	~All internal branches
+	~All incident branches
+	~Path to root
+	~Reroot on this node
+}
+
+::4.2::4.2 Quelle option permet de colorier les branches entre le nœud et la racine ?{
+	~Swap subtree
+	=All descendant branches
+	~All terminal branches
+	~All internal branches
+	~All incident branches
+	=Path to root
+	~Reroot on this node
+}
+
+::4.3::4.3 Quelle option permet de pivoter les deux branches descendant d’un noeud ?{
+	=Swap subtree
+	~All descendant branches
+	~All terminal branches
+	~All internal branches
+	~All incident branches
+	~Path to root
+	~Reroot on this node
+}
+
+::4.4::4.4 Est-ce que cette manipulation change la topologie (l’ordre de branchement) de l’arbre ?{
+	=Non
+	~Oui
+}
+
+::4.5::4.5 Quelle option permet d’enraciner l’arbre (de placer la racine entre toutes les branches descendant d’un nœud et le reste de l’arbre) ?{
+	~Swap subtree
+	~All descendant branches
+	~All terminal branches
+	~All internal branches
+	~All incident branches
+	~Path to root
+	=Reroot on this node
+}
+
+::4.6::4.6 Est-ce qu'enraciner l’arbre change sa topologie ?{
+	~Non
+	=Oui
+}
+
+::5.0::Questionnaire 5 – Interprétation de l’arbre
+
+::5.1::5.1 L'événement le plus ancien dans l'arbre est-il une duplication ou une spéciation ?{
+	~Spéciation
+	=Duplication
+}
+
+::5.2::5.2 Le temps de divergence entre les opsines bleues et rouge de l'ornithorynque est-il plus grand, plus petit ou égal au temps de divergence entre l'opsine bleue de l'ornithorynque et l'opsine rouge de l'homme ?{
+	~%-33.3333%Plus grand, car la somme des longueurs des branches entre les opsines bleue et rouge de l'ornithorynque est plus grande que la somme des longueurs des branches entre l'opsine bleue de l'ornithorynque et l'opsine rouge de l'homme.
+	~%-33.3333%Plus grand, car il y a plus de nœuds entre les opsines bleue et rouge de l'ornithorynque que entre l'opsine bleue de l'ornithorynque et l'opsine rouge.
+	~%100%Egal, car l'ancêtre commun le plus récent des opsines bleue et rouge de l'ornithorynque est le même que celui de l'opsine bleue de l'ornithorynque et l'opsine rouge de l'homme.
+	~%-33.3333%Plus petit, car les opsines bleue et rouge de l'ornithorynque sont des opsines de même espèce.
+}
+
+::5.3::5.3 Comparez la position des monotrèmes, marsupiaux et euthériens dans la branche de l'opsine bleue de votre arbre FastME avec l'arbre que vous avez construit à l'aide de NCBI-Taxonomy (arbre de référence). Les positions de ces taxa sont-elles cohérentes entre les arbres ?{
+	~%33.3333%Non, car les euthériens (Boreoeutheria) n'apparaissent pas comme un clade.
+	~%33.3333%Non, car les marsupiaux (Metatheria) ne sont pas au bon endroit comme première subdivision des Theria.
+	~%-50%Oui, car les primates (Homo et Macaca) apparaissent comme première subdivision au sein des Theria.
+	~%33.3333%Non, car les primates (Homo et Macaca) apparaissent comme première subdivision au sein des Theria.
+	~%-50%Oui, car les marsupiaux (Metatheria) apparaissent comme groupe frère de Mus+Rattus+Bos+Felis+Sus.
+}
+
+::5.4::5.4 Comparez la position des monotrèmes, marsupiaux et euthériens dans la branche de l'opsine rouge-vert de votre arbre FastME avec l'arbre que vous avez construit à l'aide de NCBI-Taxonomy (arbre de référence). Les positions de ces taxa sont-elles cohérentes entre les arbres ?{
+	~%33.3333%Non, car les euthériens (Boreoeutheria) n'apparaissent pas comme un clade.
+	~%33.3333%Non, car les monotrèmes (Monotremata) ne sont pas au bon endroit comme première subdivision des mammifères.
+	~%-50%Oui, car les primates (Homo et Macaca) apparaissent comme première subdivision au sein des Theria.
+	~%33.3333%Non, car les primates (Homo, Macaca, Papio) apparaissent comme première subdivision au sein de mammifères.
+	~%-50%Oui, car les marsupiaux (Metatheria) apparaissent comme groupe frère de Monotremata.
+}
+
+::5.5::5.5 Selon l’introduction la vision trichromatique des certains primates est apparue, du fait d'une duplication de l'opsine MWS/LWS. Comparez la position des opsines vertes (MWS) et rouges (LWS) des primates (Homo, Macaca, Papio) dans l’arbre. Répondez par Vrai ou Faux
+
+::5.5.1::5.5.1 On peut identifier la duplication qui est à l’origine de la branche verte et de la branche rouge des opsines chez les primates.{T}
+
+::5.5.2::5.5.2 Dans l’arbre FastME les opsines rouges des primates forment un clade, les opsines vertes des primates aussi.{T}
+
+::5.5.3::5.5.3 Dans l’arbre FastME l’ensemble des opsines vertes et rouges des primates forment un clade.{T}
+
+::5.5.4::5.5.4 Dans l’arbre FastME, les branches des opsines vertes et rouges des primates reflètent les lien de parenté entre Homo, Papio et Macaca.{T}
+
+::6.0::Questionnaire 6 – Comparaison des arbres
+
+::6.1::6.1 La position des groupes de monotrèmes, marsupiaux et Euthérien dans la branche des opsines bleues reflète la phylogénie dans{
+	~%-33.3333%Arbre 1
+	~%100%Arbre 2
+	~%-33.3333%Arbre 3
+	~%-33.3333%Aucun des trois arbres
+}
+
+::6.2::6.2 La position des monotrèmes, marsupiaux et Euthériens dans la branche des opsines vert-rouge reflète la phylogénie dans{
+	~%-33.3333%Arbre 1
+	~%-33.3333%Arbre 2
+	~%-33.3333%Arbre 3
+	~%100%Aucun des trois arbres
+}
+
+::6.3::6.3 La branche des opsines vertes et rouges reflète correctement la relation de parenté des primates au sein des Boreoeutheria dans{
+	~%-33.3333%Arbre 1
+	~%-33.3333%Arbre 2
+	~%-33.3333%Arbre 3
+	~%100%Aucun des trois arbres
+}
+
+::6.4::6.4 Les positions relatives des opsines vertes et rouges des primates indiquent correctement la position de la duplication dans{
+	~%33.3333%Arbre 1
+	~%33.3333%Arbre 2
+	~%33.3333%Arbre 3
+	~%-100%Aucun des trois arbres
+}		

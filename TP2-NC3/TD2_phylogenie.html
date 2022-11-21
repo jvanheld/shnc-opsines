@@ -18,7 +18,7 @@
   
   <body>
     
-    <p class="header">AMU    &nbsp;::   Sciences et Humanités - L2   &nbsp;::    Nature et culture   &nbsp;::    année 2018/2019</p>
+    <p class="header">AMU    &nbsp;::   Sciences et Humanités - L2   &nbsp;::    Nature et culture   &nbsp;::    année 2022/2023</p>
     
     <h1 class='title'>Inférence phylogénétique</h1>
     <div class='attention'>
@@ -61,7 +61,8 @@
 	  <li><a href='#phylogeny_alignment'>Alignement multiple</a></li>
 	  <li><a href='#phylogeny_curation'>Curation de l'alignement</a></li>
 	  <li><a href='#phylogeny_tree'>Construction de l'arbre</a></li>
-	  <li><a href='#phylogeny_viz'>Visualisation et interprétation de l'arbre</a></li>
+	  <li><a href='#phylogeny_tree_interpretation'>Interprétation de l’arbre</a></li>
+	  <li><a href='#phylogeny_workflow'>Effet de modification de workflow - Comparaison des arbres</a></li>
 	</ul>
       </li>
 	  <li><a href='#tree_of_life'>Exploration de l'arbre de la vie (Facultatif)</a></li>
@@ -162,20 +163,19 @@
     <p><b>But de l'exercice:</b> extraire un arbre restreint aux
       espèces correspondant aux opsines de votre sélection.</p>
 
-    <p>Au TD précédent (alignements multiples), nous avions
-      sélectionné 34 opsines, appartenant à 17 espèces
-      de mammifères. Nous allons construire un arbre phylogénique qui
+    <p>Nous avons sélectionné 34 opsines, appartenant à 17 espèces
+      de mammifères pour ce TP. Nous allons construire un arbre phylogénique qui
       reflétera le scénario le plus vraisemblable concernant
-      l'histoire évolutive de ces espèces, en nous basant sur la
+      l'histoire évolutive des espèces choises, en nous basant sur la
       taxonomie générale des mammifères.</p>
 
     <p>Le site <a target='_blank' href='http://tolweb.org/tree/'>Tree
-	of life</a> utilisé ci-dessus est très convivial, et permet
+	of life</a> est très convivial, et permet
       d'obtenir des informations détaillées pour chacun des groupes
       taxonomiques. Cependant, il n'est pas évident d'y localiser toutes
       les espèces correspondant aux opsines de notre sélection. Pour
       ce faire, nous allons utiliser un outil très pratique disponible
-      sur le site taxonomique du NCBI.</p>
+      sur le site taxonomique de NCBI.</p>
     
     <div class='protocol'>
       <ol>
@@ -225,7 +225,7 @@
 	<p><li>Dessinez un arbre phylogénétique (sur papier) basé sur l’affichage de Comme Tree. 
 	Conservez ce dessin (et laisser la page de Common Tree ouvert) afin d'effectuer la
 	    réconciliation entre l'arbre moléculaire des opsines et
-	    cet arbre des espèces dans la dernier exercice de ce TP. </li></p>
+	    cet arbre des espèces dans le dernier exercice de ce TP. </li></p>
       </ol>
       
       <div class='exo'>
@@ -239,6 +239,9 @@
 	  <li><p>Quel est le plus petit groupe taxonomique qui contient 
 	  l’homme et le lapin (<i>Oryctolagus cuniculus</i>)&nbsp;?
 	  </p></li>
+	  
+	  <li><p>Parmi les deux espèces suivantes laquelle est la plus proche parente de <i>Tarsipes rostratus</i> :
+	  <i>Tachyglossus aculeatus</i> ou <i>Felis catus</i> ? </pl></li>
 	</ol>
       </div>
     </div>
@@ -286,13 +289,13 @@
 	et au moins une autre opsine (rouge/verte) est la conséquence 
 	d’une duplication du gène d’opsine ancestrale qui est arrivée 
 	avant l’ancêtre commun des mammifères. La présence 
-	de l’opsine rouge et opsine vert chez certains primates 
-	est la conséquence d’une duplication de gêne opsine rouge/vert
+	de l’opsine rouge et de l'opsine verte chez certains primates 
+	est la conséquence d’une duplication du gène opsine rouge/vert
 	dans la lignée des primates.</p>
 
 	<h3>Constuction d'un arbre phylogénétique en ligne</h3>
     <p>Le site <a target='_blank'
-		  href='http://phylogeny.lirmm.fr/'>http://phylogeny.lirmm.fr/</a>
+		  href='https://ngphylogeny.fr/'>https://ngphylogeny.fr/</a>
       permet de construire des arbres phylogénétiques à partir des
       séquences protéiques ou nucléiques. Nous allons utiliser cet
       outil pour construire un arbre moléculaire des opsines. Nous
@@ -300,7 +303,7 @@
       l'arbre des espèces que nous avons créé au début de ce TP.</p>
 
     <p>Le site <a target='_blank'
-		  href='http://phylogeny.lirmm.fr/'>http://phylogeny.lirmm.fr/</a>
+		  href='https://ngphylogeny.fr/'>https://ngphylogeny.fr/</a>
       est particulièrement flexible: il permet de choisir, pour chaque
       étape de l'inférence phylogénique, une méthode particulière, et
       de régler les paramètres essentiels de chaque algorithme.  </p>
@@ -318,11 +321,13 @@
     </p>
 
 
-    <a name='phylogeny_alignment'></a>
-    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
-    <h3>Opsines – Alignement multiple</h3>
 
-    <div class='protocol'>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+	<a name='workflow'></a>
+	<div class='protocol'>
+    <h3>Opsines – Création de workflow de l'analyse phylogénétique</h3>
+
+
       <ol>
 	<li><p>Récupérez le fichier (fasta) des séquences d'opsines de
 	    mammifères 
@@ -330,388 +335,202 @@
 	</p></li>
 	
 	<li><p>Connectez-vous à Phylogeny.fr (<a target='_blank'
-						 href='http://phylogeny.lirmm.fr/'>http://phylogeny.lirmm.fr/</a>).</p></li>
+						 href='https://ngphylogeny.fr/'>https://ngphylogeny.fr/</a>).</p></li>
 
 	<li><p>Choisissez l'option <span class='option'><b>A la
-		carte</b></span> dans
-	    l'onglet <span class='option'><b>Phylogeny
-		Analysis</b></span>.
+		carte</b></span> sur la page d'accueil.
 	</p></li>
 
 
-	<li><p>Créez un <span class='option'>workflow</span>
+	<li><p>Créez un <span class='option'>workflow</span> (<b>Workflow Numéro 1</b>)
 	    (organigramme, c'est-à-dire une description graphique de
 	    l'enchaînement entre programmes bioinformatiques) en
-	    cochant/décochant les cases de chaque étape et en
-	    choisissant les logiciels pour chaque étape sélectionnée.</p>
-	  
-	  <p class="tips">Dans un premier temps, laissez toutes les
-	    options par défaut. Quand vous aurez acquis de
-	    l'expérience, vous pourrez modifier les paramètres pour
-	    analyser leur impact sur la topologie des arbres.
-	</p></li>
-
-	<li><p>Sélectionnez l'option <span class='option'><b>Step by
-		step</b></span> pour pouvoir examiner les résultats de
-	    chaque étape.
-	  <p class='tips'>Nous utilisons l'option "pas à pas" pour
-	    pouvoir explorer les paramètres et analyser les résultats
-	    intermédiaires à chaque étape. Quand vous aurez acquis une
-	    maîtrise suffisante de l'inférence phylogénétique, vous
-	    pourrez utiliser l'option <span class='option'>all at
-	      once</span>, qui fera tourner toutes les analyses et vous
-	    avertira par courriel de la complétion de la tâche.</p>
-	</p></li>
-
-	<li><p>Créez le workflow
-	    (bouton <span class='option'><b>Create
-		Workflow</b></span>)</p></li>
-
-	<li><p>Cliquez sur <span class='option'>Browse</span> pour
-	    charger votre fichier fasta sur le site Phylogeny.fr, ou
-	    (si vote fichier est de taille raisonnable) copiez les
-	    séquences dans la fenêtre prévue.</p></li>
-	
-	<li><p>Nous vous suggérons d'indiquer
-	    votre <span class='option'>courriel</span>, afin de
-	    recevoir un courriel de notification des
-	    résultats.</p></li>
-	
-	<li><p>Lancez l'analyse en cliquant sur le
-	    bouton <span class='option'><b>submit</b></span>.</p></li>
-
-	<div class="tips">
-	  <ul>
-	    <li><p>Vous pouvez ignorer les éventuels messages
-		d'avertissement (warnings) "sequence #1 name is too long
-		(greater or equal to 80 characters)"</p></li>
-	    
-	    <li>Le site Web affiche des onglets
-		correspondant à chaque étape du workflow. Chaque fois
-		qu'une étape est terminée, le lien "Res." devient actif
-		dans l'onglet.</p></li>
-	  </ul>
-	</div>
-
-	<li><p>Cliquez sur le lien <span class='option'>Res.</span> de
-	    l'onglet Alignement. Vérifiez l'alignement pour éliminer
-		éventuellement quelques séquences qui s'alignent mal.</p>
+	    sélectionnant les outils/algorithmes de chaque étape.</p>
+		<p><ul>
+			<li><span class='option'>MAFFT</span> pour l'alignement multiple</li>
+			<li><span class='option'>Gblocks</span> pour la curation</li>
+			<li><span class='option'>FastME</span> pour la construction de l'arbre</li>
+			<li><span class='option'>Newick Display</span> pour la manulation de l'arbre</li>
+	    </ul></p>
 		
-	  <div class='tips'>
-	  <p>Quand le fichier de séquence contient quelques séquences
-	    très éloignées, la tâche d'alignement multiple est
-	    particulièrement difficile. Ces séquences nuisent à la
-	    fiabilité de l'alignement, et, indirectement, à
-	    l'inférence d'un arbre moléculaire. Il est préférable de
-	    les éliminer avant la construction d'un arbre
-	    phylogénétique. Dans le cas des opsines, la conservation
-	    est suffisamment bonne, et couvre l'ensemble des
-	    séquences. Nous pouvons donc travailler avec l'ensemble
-	    des séquences que nous avons collectées.</p>
-      </div>
-		</li>
+		<div class="tips"><p>Pensez à donner un nom à votre worklow dans la fenêtre
+		<span class='option'>Name</span>. Ceci vous permettra d'identifier vos différentes analyses.</p></div>
+	</li>
+	<li><p>Cliquez sur <span class='option'>Create workflow</span></p></li>
 	
-	<li><p>Au bas de la page de résultats de l'alignement, cliquez
-	    <span class='option'><b>Next Step</b></span> pour
-	    passer à l'étape suivante.</p></li>
-      </ol>
+	
+	<li><p>Sélectionnez le fichier fasta des séquences d'opsines dans la section Input data 
+	ou copiez-collez les séquences à analyser 
+	dans la fenêtre de <span class='option'>Input data</span>. </p></li>
+	<li><p>Il est possible de paramétrer chaque logiciel de pipeline sur 
+	cette page en cliquant sur le signe <span class='option'>+</span> après le nom des logiciels. 
+	Cliquez sur le signe <span class='option'>+</span> après <span class='option'>FastME</span> et 
+	sélectionnez <span class='option'>yes</span> pour <span class='option'>Bootstrap branch supports</span>. 
+	Une fenêtre apparait. Entrez <span class='option'>100</span> à <span class='option'>Number of replicates</span>. 
+	Laissez les autres paramètres par défaut.</p></li>
+	<li><p>Cliquez sur Submit pour commencer les analyses.</p></li>
+
+    <li><p>Au fur et à mesure de l’analyse, les liens apparaissent à partir du bas, 
+	et vous permettent de suivre l’avancée de l’analyse.</p></li>
+
+	<div class=tips>
+    Si au bout de 5 minutes https://ngphylogeny.fr apparaît bloqué, 
+	vous pouvez utiliser le lien suivant pour accéder à une copie 
+	de secours des résultats : <a target="_blank" href="https://ngphylogeny.fr/workspace/history/d9a95488d79f3587">
+	Page de Résultats de Workflow Numéro 1</a>
+	</div>
+	</ol>
+	
+   <a name='phylogeny_alignment'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Opsines – Alignement multiple</h3>
+    <div class='protocol'>
+    <ol>
+		<li><p>Visualisez les séquences analysées en cliquant sur le bouton <span class='option'>MSAViewer </span>
+		dans la ligne <span class='option'>1. uploaded_content</span></p></li>
+		<li><p>Ouvrez l’alignement multiple en cliquant sur le bouton <span class='option'>MSAViewer </span>
+		dans la ligne <span class='option'>2. Mafft alignment</span>.</li>
+	
+	</ol>
+	
+	<div class='exo'>
+	<h3>Questionnaire 2 – Alignement multiple</h3>	
+	<ol>	
+		<li><p>Quelle est la longueur de la séquence la plus longue ?</p></li>
+		<li><p>Quelle est la longueur de la séquence la plus courte ?</p></li>
+		<li><p>Quelle est la longueur de l’alignement ?</p></li>
+		<li><p>La longueur de l'alignement est :
+		<ol>
+			<li>égale à la longueur de la séquence la plus longue.</li>
+			<li>égale ou plus grande à la longueur de la séquence la plus longue.</li>
+			<li>plus petite ou égale à la séquence la plus courte 
+			afin de prendre en compte uniquement les portions homologues des différentes séquences.</li>
+			<li>égale au nombre d'acides aminés identiques pour toutes les séquences.</li>
+		</ol>
+		</p></li>
+		
+		<li><p>Quelles sont les différences entre les séquences alignées et non alignées ?
+			<ol>
+				<li>Certaines séquences alignées contiennent des gaps pour permettre de faire 
+				ressortir la similarité entre les séquences.</li>
+				<li>Certaines séquences sont éliminées des séquences alignées.</li>
+				<li>Certaines séquences sont complétées avec des acides aminés 
+				supplémentaires dans l’alignement.</li>
+				<li>Certains acides aminés des séquences non alignés sont
+				éliminés pendant l’étape d’alignement.</li>
+			</ol>
+		</p></li>
+	</ol>
     </div>
-
-
+	
+	</div>
+	
+	
     <a name='phylogeny_curation'></a>
     <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
     <h3>Opsines – Curation de l'alignement</h3>
-
     <div class='protocol'>
-      <ol>
-
-	<li><p>Nous passons maintenant à l'étape dite de
-	    <span class='concept'>curation</span>. Cette étape est
-	    optionnelle. Elle permet de "nettoyer" l'alignement
-	    multiple, pour n'en retenir que
-	    les <span class='concept'>sites</span> (colonnes de
-	    l'alignement) pertinents pour l'inférence phylogénétique
-	    qui suivra.</p>
-	
-		<div class='tips'>
-		<p>Dans un alignement multiple la position des gaps 
-		est souvent ambiguë, si les séquences ne sont pas 
-		fortement conservées. Pour cette raison, il est préférable 
-		de se baser sur les blocks (colonnes contiguës dans l’alignent) 
-		sans gap pour inférer des arbres phylogénétiques. <br>
-		Le logiciel Gblock ne fait pas qu'enlever les colonnes 
-		de l’alignement avec gaps, mais il élimine aussi les 
-		blocks sans gap trop courts, car ces positions se 
-		trouvent dans une région de l’alignent relativement peu fiable.</p>
-		</div>
-	</li>
-
-
-	<li><p>Le site Phylogeny.fr vous propose de changer
-	    les paramètres par défaut pour appliquer des conditions
-	    plus ou moins exigeantes ("stringent" en anglais) à la
-	    sélection des <span class='concept'>sites</span> (colonnes
-	    de l'alignement) qui seront pris en compte lors de la
-	    construction de l'arbre.</p></li>
-	  
-	<li><p>Laissez tous les paramètres par défaut, et
-	    cliquez <span
-		       class='option'><b>submit</b></span>.</p>
-	</li>
-    </ol>
-
-      <div class='tips'>
-	<p>Au terme de la curation, l'interface Web vous présente
-	  <ol>
-	    <li>un alignement coloré (fenêtre <b>Gblocks 0.91b
-		Results</b>). Sur l'alignement multiple après
-	      curation, les colonnes de l'alignement retenues pour
-	      l'inférence de l'arbre sont soulignées en
-	      bleu.</li>
-	    <li>Une série de liens vers les fichiers d'entrée et
-	      de sortie.
-	      <ul>
-		<li>Le fichier "Input raw alignment" contient
-		  l'alignement produit par Clustalw (ce résultat
-		  est fourni dans un format légèrement différent,
-		  appelé "Phylip". Notez que cet alignement
-		  contient des gaps.</li>
-		<li>Le fichier "Cured alignment in PHYLIP Format"
-		  est limité aux colonnes qui ont été retenues au
-		  terme du processus de curation, et qui serviront
-		  pour les étapes ultérieures.</li>
-	      </ul>
-	    </li>
-	    <li>Au bas de la page, le
-	      bouton <span class='option'>Start jalview</span> vous
-	      permet de visualiser l'alignement de façon
-	      dynamique.</li>
-	    <li>L'arbre guide est affiché. 
-	      <ul><p>Rappel:
-		  l'<a
-		       href='concepts.html#arbre_guide'>arbre-guide</a>
-		  n'est qu'un outil utilisé temporairement pour
-		  construire l'alignement, il ne peut pas être
-		  interprété comme une inférence de l'histoire
-		  évolutive de la famille des opsines.</p>
-	      </ul>
-	    </li>
-	    <li>Une liste de liens vers les fichiers de résultats, en
-	      différents formats.</li>
-	  </ol>
-	</p>
-
-      </div>
-
-      <div class='exo'>
-	<h4>Questionnaire 2 - Curation de l'alignement </h4>	
-	<ol>
-	  <li><p>Quelle est la longueur totale de
-	      l'alignement  des opsines de mammifères &nbsp;?</p></li>
-
-	  <li><p>Combien de colonnes (positions) de l'alignement
-	      ont été retenues pour l'inférence
-	      phylogénétique&nbsp;? ("New positions")
-	  </p></li>
-	  
-	  <li><p>Indiquez la position du bloc le plus long retenu par 
-	  Gblock. Donnez la position de début et la fin dans l’alignement complet. </p></li>
-
+    <ol>
+		<li><p>Dans un alignement multiple, la position des gaps est souvent ambiguë, si les séquences 
+		ne sont pas fortement conservées. Les régions incorrectement alignées peuvent biaiser 
+		les analyses phylogénétiques basées sur les séquences alignées.</p></li>
+		<li><p>Pour cette raison, il est préférable d’éliminer des régions des alignements 
+		qui contiennent des gaps et/ou les régions d’une entropie trop élevée. 
+		C’est l’étape de curation de l’alignement. Il permet de "nettoyer" l'alignement multiple, 
+		pour n'en retenir que les sites (colonnes de l'alignement) pertinents pour l'inférence 
+		phylogénétique qui suivra.</p></li>
+		<li><p>Ouvrez l’alignement nettoyé en cliquant sur le bouton <span class='option'>MSAViewer</span> 
+		dans la ligne <span class='option'>6. Gblocks Cleaned sequences</span> et comparez-le avec 
+		l'alignement original ( <span class='option'>MSAViewer</span> dans la ligne 
+		<span class='option'>2. Mafft alignment</span>).</p></li>
 	</ol>
-      </div>
-
+	
+	<div class='exo'>
+	<h3>Questionnaire 3 - Curation de l'alignement multiple</h3>	
+	<ol>	
+		<li><p>Quelle est la longueur de l’alignement nettoyé ?</p></li>
+		<li><p>Quelle est la première position de l’alignement multiple (original) qui 
+		est retenue dans l’alignement nettoyé ?</p>
+		<div class="tips">
+		Tip : Vous pouvez effectuer une recherche de motif à l’aide de Find Motif dans le menu Selection.
+		</div>
+		</li>
+		<li><p>Quelle est la dernière position de l’alignement multiple (original) qui est retenue dans l’alignement nettoyé ?</p></li>
+		<li><p>Y a-t-il des gaps dans l’alignement original entre ces positions ?</p></li>
+	</ol>
     </div>
-
-
-
+	
+	</div>
+	
     <a name='phylogeny_tree'></a>
     <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
     <h3>Opsines – Construction et manipulation de l'arbre</h3>
-
     <div class='protocol'>
-      <ol>
-	<li><p>Au bas de l'onglet <span class='option'>Curation
-	      Res</span>, cliquez sur le
-	    bouton <span class='option'>Next step</span>. Ceci vous
-	    amène à l'onglet <span class='option'>Phylogeny
-	      Set</span>.</p></li>
-
-	<li><p>Choissiez <span class='option'>SH-like</span> dans le menu 
-		<span class='option'>Approximate Likelihood-Ratio Test (aLRT)</span>. 
-		
-	    <div class='tips'>
-		<ul>
-	      <li>L'option de bootstrap est fort utile pour mesurer la
-		robustesse de votre arbre, mais elle est gourmande en
-		temps.</li>
-		<li>Ils existent des méthodes alternatives pour évaluer la 
-		robustesse des branches, qui sont plus rapides que le bootstap, 
-		mais moins précises.</li>
-		</ul>
-
-	    </div>
-	</p></li>
-
-	<li><p>Laissez les autres paramètres inchangés, et lancez la
-	    construction de l'arbre phylogénétique en
-	    cliquant <span class='option'>Submit</span>. </p>
-	  <p class='tips'>Cette tâche peut prendre quelques minutes,
-	    le moment est sans doute venu de prendre une pause.</p>
-	</li>	
-	
-
-	<div class='tips'>
-	  <p>Après quelques minutes, la page de résultats
-	    s'affiche. L'arbre phylogénétique s'affiche dans un
-	    format très simple, qui ne permet pas de le manipuler
-	    directement (par exemple pour pivoter les branches,
-	    renommer les séquences, enraciner l'arbre, ...).
-		</p>
-	</div>
-
-	<li><p>Cliquez sur <span class='option'>Next step</span> puis sur 
-	<span class='option'>Submit</span> pour pouvoir
-	modifier votre arbre.</p></li>	
-	
-	<div class='tips'>
-		<p>Votre arbre apparaît en haut de la page.</p>
-	    <ul>
-	      <li>En dessous de cette figure, la page de résultats vous
-		présente une série d'options que vous pouvez modifier afin
-		d'adapter le dessin en fonction des résultats, et de vos
-		goûts personnels.</li>
-	      <li>Vous pouvez également exporter le résultat sous
-		différents formats, qui vous permettront de les
-		ouvrir avec des logiciels de visualisation et
-		de manipulation d'arbres phylogénétiques. </li>
-	    </ul>
-	  </p>
-	</div>
-
-	<li><p>Prenez le temps de découvrir les différentes
-	    manipulations possibles avec l'arbre.</p></li>
-
-	<li><p>Coloriez quelques branches de couleurs différentes,
-	    pour pouvoir bien comprendre l'effet des options qui
-	    changent l'affichage des branches.</p></li>
-      </ol>
-      <div class='exo'>
-	<h4>Questionnaire 3 - Construction et manipulation de l'arbre</h4>	
-	<ol>
-	  <li><p>Quelle option permet de colorier une branche&nbsp;?</p></li>	
-	  <li><p>Quelle option permet de pivoter la descendance complète d'une branche (image miroir) ?
-	  </p></li>
-	  <li><p>Quelle option permet de pivoter les deux branches descendant d'une branche donnée ?
-	  </p></li>	  
-	  <li><p>Quelle option permet d'enraciner l'arbre&nbsp;?</p></li>	
-	  <li><p>Quelle option permet de changer la topologie de l'arbre&nbsp?</p></li>
-	  <li><p>Explorez les options des différents styles d'arbres
-	      (<span class='option'>Tree conformation</span>).
-	      Changent-elles la topologie de l'arbre&nbsp;?</p></li>
+    <ol>
+		<li><p>Visualisez l’arbre phylogénétique en cliquant sur le bouton <span class='option'>Viewer</span>
+		dans la ligne <span class='option'>14. Output Tree</span></p></li>
+		<li><p>Expérimentez avec les différents formats d’affichage 
+		(<span class='option'>Phylogram, Dendogram, Linear, Rabial, Stanted</span>)</p></li>
+		<li><p>Affichez les valeurs de bootstrap  en cochant la case <span class='option'>Diplay support Values</span>.</p></li>
+		<li><p>Afficher l’arbre en format <span class='option'>dendrogram</span> et <span class='option'>linear</span>.</p></li>
+		<li><p>En cliquant sur un nœud (clic gauche), un menu apparait avec une série des manipulations
+		possibles. 
+		Expérimentez avec ces options pour découvrir leur utilité.</p></li>	
 	</ol>
-      </div>
+	
+	<div class='exo'>
+	<h3>Questionnaire 4 – Manipulation de l’arbre</h3>	
+	<ol>	
+		<li><p>Quelle option permet de colorier toutes les branches qui descendent d’un nœud ?</p></li>
+		<li><p>Quelle option permet de colorier les branches entre le nœud et la racine ?</p></li>
+		<li><p>Quelle option permet de pivoter les deux branches descendant d’un noeud ?</p></li>
+		<li><p>Est-ce que cette manipulation change la topologie (l’ordre de branchement) de l’arbre ?</p></li>
+		<li><p>Quelle option permet d’enraciner l’arbre (de placer la racine entre 
+		toutes les branches descendant d’un nœud et le reste de l’arbre) ?</p></li>
+		<li><p>Est-ce qu'enraciner l’arbre change sa topologie ?</p></li>
+	</ol>
     </div>
-
-    <a name='phylogeny_viz'></a>
-    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
-    <h3>Opsines – Visualisation et interprétation de l'arbre</h3>
-
-    <div class='protocol'>
-      <ol>
-	<!--
-	    <li><p>Enracinez votre arbre.</p></li>
-	    -->
 	
-	<li><p>Utilisez le
-	    format <a
-		      href='concepts.html#cladogramme'>cladogramme</a> en
-	    activant l'option <span class='option'>Ignore branch
-	      length</span>.</p></li>
-	
-	<li><p>Enracinez votre arbre basé sur les <a href='#phylogeny_opsins'>information 
-	données au début de l’exercice</a>.</p></li>
-	<li><p>Colorez les branches de votre arbre de manière à
-	    associer les couleurs rouge, verte et bleue en accord avec
-	    les types d'opsines.
-	    <div class='tips'>
-	      <ul>
-		<li><p>Pour colorer une branche, sélectionnez d'abord une
-		  couleur (option <span class='option'>Dynamic Tree
-		    Edition &gt; Color &gt; using color</span>), puis
-		  cliquez sur l'icône carrée
-		  devant <span class='option'>Color</span>, remontez sur
-		  le graphique de l'arbre, et cliquez sur la branche que
-		  vous voulez colorer.</p></li>
-		<li><p>Utilisez la couleur <b>brune</b> pour marquer les opsines pour
-		  lesquelles la distinction entre vert et rouge n'est pas
-		  établie. Pour la majorité des mammifères il y a un seul gène qui code
-		  pour l'opsine verte/rouge. Même s'il sont annotés comme opsines rouge 
-		  ou verte coloriez-les en brun et utilisez les couleur verte et rouge
-		  que pour les primates, qui possèdent 2 gènes, un pour le rouge, 
-		  l'autre pour le vert</p></li>
-		<li><p>Pour mieux voir le détail des branchements les plus
-		  récents, activez
-		  l'option <span class='option'>Ignore branch
-		    lengths</span>. Ceci affichera le résultat sous
-		  forme
-		  de <a
-			href='concepts.html#cladogramme'>cladogramme</a>,
-		  ce qui facilitera grandement le coloriage des
-		  branches de l'arbre. Vous pourrez ensuite revenir au
-		  mode <a
-			  href='concepts.html#phylogramme'>phylogramme</a>
-		  pour sauvegarder le résultat final.</p></li>
-		<li><p>De manière générale, nous vous recommandons de
-		  sauvegarder systématiquement les résultats de vos
-		  analyses phylogéniques sous les deux formes
-		  (cladogramme et phylogramme), car ces modes de
-		  visualisation sont complémentaires.</p></li>
-	      </ul>
-	    </div>
-	</li>
-	<!--	
-	<li><p>Dans une fenêtre séparée, ouvrez l'arbre des espèces que
-	  vous aviez généré sur l'outil <span class='program'>Common
-	    tree</span> du site taxonomique du NCBI. 
-		Comparez cet arbre des espèces avec la branche bleue et puis avec la 
-		branche rouge/verte de votre arbre inféré. Notez particulièrement, si
-		la position des groupes des monotrèmes, primates et eutheria est correcte
-		dans l'arbre inféré.</p></li>
-J'ai ajouté quelques étiquette et ensuite le programme a refusé d'ajouter plus&nbsp;???? Bizarre-->
-
-      </ol>
-
-      <div class='exo'>
-	<h4>Questionnaire 4 - Interprétation des l'arbres</h4>
-	
-	<div class='tips'>
-	<b>Au cas de problème avec le site phylogeny.fr, analysez l’arbre de PhyML qui se trouve <a href=
-	"TD2_data_files/OPN_RVB_PhyML.png" target='_blank'>ICI</a> </b>
 	</div>
-	<ol>
-	  <li><p>L'événement le plus ancien dans l'arbre est-il une
-	      duplication ou une spéciation&nbsp?</p></li>
+	
+    <a name='phylogeny_tree_interpretation'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Opsines – Interprétation de l’arbre</h3>
+    <div class='protocol'>
+	
+		<p>Nous savons qu’une duplication de gène d’opsine ancestral a produit deux copies 
+		du gène dont une est devenue le gène de l’opsine sensible à la lumière bleue 
+		(SWS, Short Wave Sensitive) tandis que l’autre sensible à la lumière rouge-vert 
+		(LSW, MWS, Long et Middle Wave Sensitive). </p>
+		
+		<p>Cette duplication a eu lieu bien avant la différentiation des mammifères. </p>
+		<p><b>Utilisez cette information pour <span class='option'>enraciner l’arbre</span> 
+		(clic gauche sur le noeud et <span class='option'>Reroot on this node</span>).</b></p>
 
-	  <li><p>Le temps de divergence entre les opsines bleue et
-	      rouge de l'ornithorynque est-il plus grand, plus petit
-	      ou égal au temps de divergence entre l'opsine bleue de
-	      l'ornithorynque et l'opsine rouge de l'homme&nbsp?</p></li>
-
-	  <li><p>Comparez la position des monotrèmes, marsupiaux et euthériens 
-	  dans la <b>branche de l'opsine bleue</b> de votre <b>arbre PhyML</b> 
-	  avec l'arbre que vous avez construit à l'aide de NCBI-Taxonomy 
-	  (<b>arbre de référence</b>). Les positions de ces taxa sont-elles cohérentes entre les arbres ?</p>
-	  
-	  <div class='tips'>
+	<div class='exo'>
+	<h3>Questionnaire 5 – Interprétation de l’arbre</h3>	
+	<ol>	
+		<li><p>L'événement le plus ancien dans l'arbre est-il une duplication ou une spéciation ? </p></li>
+		
+		<li><p>Le temps de divergence entre les <b>opsines bleues et rouge de 
+		l'ornithorynque</b> est-il plus grand, plus petit ou égal au temps de 
+		divergence entre <b>l'opsine bleue de l'ornithorynque et l'opsine rouge de l'homme</b> ?</p></li>
+		
+		<li><p>Comparez la position des <b>monotrèmes, marsupiaux et euthériens </b>
+		dans la <b>branche de l'opsine bleue</b> de votre arbre <b>FastME</b> avec l'arbre 
+		que vous avez construit à l'aide de <b>NCBI-Taxonomy</b> (arbre de référence). 
+		Les positions de ces taxa sont-elles cohérentes entre les arbres ?</p>
+		
+		<div class='tips'>
 		<p><b>Pour rappel:</b></p>
 		<ul>
-			<li>Monotrèmes
+			<li>Monotrèmes (Monotremata)
 				<ul>
 					<li>Ornithorhynchus anatinus</li>
 					<li>Tachyglossus aculeatus</li>
 				</ul>
 			</li>
-			<li>Marsupiaux
+			<li>Marsupiaux (Metatheria)
 				<ul>
 					<li>Monodelphis domestica</li>
 					<li>Thylamys elegans</li>
@@ -720,7 +539,7 @@ J'ai ajouté quelques étiquette et ensuite le programme a refusé d'ajouter plu
 					<li>Setonix brachyurus</li>
 				</ul>
 			</li>
-			<li>Euthériens
+			<li>Euthériens (Boreoeutheria)
 				<ul>
 					<li>Felis catus</li>
 					<li>Pteropus alecto</li>
@@ -737,45 +556,127 @@ J'ai ajouté quelques étiquette et ensuite le programme a refusé d'ajouter plu
 		</ul>
 	  </div>
 	  </li>
-	  <li><p>Comparez la position des monotrèmes, marsupiaux et 
-	  euthériens dans la <b>branche de l'opsine rouge/verte</b> de votre <b>arbre 
-	  PhyML</b> avec l'arbre que vous avez construit à l'aide de NCBI-Taxonomy 
-	  (<b>arbre de référence</b>).  Les positions de ces taxa sont-elles cohérentes 
-	  entre les arbres ? Ignorez les branches des opsines vertes des primates 
-	  (Homo_MWS, Macaca_MWS, Papio_MWS) pour cette question.</p></li>
-	  
-	  
-	  <p>Selon l’introduction la vision trichromatique des certains 
-	  primates est apparue, du fait d'une duplication de l'opsine MWS/LWS. 
-	  <b>Comparez la position des opsines vertes (MWS) et rouges (LWS) des 
-	  primates (Homo, Macaca, Papio)</b> dans <b>l'arbre PhyML</b> et dans L'arbre
-	  ci-dessous construit par le méthode de <b>Neigbour Joining (NJ):</b>
-	  
-	  <p><a target='_blank'  href='TD2_data_files/NJ_OPNRV_mammiferes.png'>
-	<img border='2' width="500" src='TD2_data_files/NJ_OPNRV_mammiferes.png'
-	     alt='Neighbor joining, opsines rouges et vertes des mammifères'
-	     title='NJ'/>
-      </a></p>
-
-	  
-	  <b>Répondez par VRAI ou FAUX. </b></p>
-	  
-	  <li><p>L’arbre NJ reflète clairement la duplication qui est à 
-	  l’origine de la branche verte et de la branche rouge des opsines chez 
-	  les primates.</p></li>
-	  <li><p>Dans l’arbre NJ les opsines rouge des primates forment un clade, 
-	  les opsines vertes des primates aussi.</p></li>
-	  <li><p>Dans l’arbre NJ l’ensemble des opsines vertes et rouges des primates forment un clade.</p></li>
-	  <li><p>Dans l’arbre PhyML les opsines rouge des primates forment un clade 
-	  et les opsines vertes des primates aussi.</p></li>
-	  <li><p>Dans l’arbre PhyML les opsines vertes des primates apparaissent en 
-	  position basale parmi les opsines rouges/vertes des mammifères 
-	  et elles sont séparées des opsines rouge des primates par des opsines des non-primates.</p></li>
-	  <li><p>L’arbre PhyML reflète mieux l’évolution des opsines vertes et rouge des primates que l'arbre NJ.</p></li>
-	  
+		
+		
+		<li><p>Comparez la position des monotrèmes, marsupiaux et euthériens dans la branche 
+		de <b>l'opsine rouge-vert</b> de votre arbre FastME avec l'arbre que vous avez 
+		construit à l'aide de NCBI-Taxonomy (arbre de référence). 
+		Les positions de ces taxa sont-elles cohérentes entre les arbres ?</p></li>
+		
+		<li><p> Selon l’introduction la vision trichromatique des certains primates 
+		est apparue, du fait d'une duplication de l'opsine MWS/LWS. 
+		Comparez la position des opsines vertes (MWS) et rouges (LWS) 
+		des primates (Homo, Macaca, Papio) dans l’arbre. </p>
+		
+		<ul>
+			<li>Dans l’arbre FastME on peut identifier la duplication 
+			qui est à l’origine de la branche verte et de la branche rouge des opsines chez les primates.</li>
+			<li>Dans l’arbre FastME les opsines rouges des primates forment un clade, les opsines vertes des primates aussi.</li>
+			<li>Dans l’arbre FastME l’ensemble des opsines vertes et rouges des primates forment un clade.</li>
+			<li>Dans l’arbre FastME la position des opsines rouges et vertes des 
+			primates est cohérente avec nos attentes basées sur la taxonomie.</li>
+		</ul>
+		</li>
 	</ol>
-      </div>
-    </div>      
+    </div>	
+	</div>
+		
+		
+    <a name='phylogeny_workflow'></a>
+    <a href='#contenu'><font size='-2'>[Retour à la table des matières]</font></a><hr>
+    <h3>Opsines – Effet de modification de workflow - Comparaison des arbres</h3>
+	<div class='protocol'>
+	<ol>
+	
+	<li><p>De même manière que précédemment, créez et lancez deux autres workflows, 
+	en utilisant les outils suivants: </p></li>
+	
+		<div class="tips">
+			En cliquant sur <span class='option'>workspace</span>, on peut passer d’une analyse à l’autre.
+		</div>
+
+	
+	<li>
+	<p>Utilisez toujours le même jeu des séquences d'opsines que précédemment.</p>
+		<ul>
+			<li><b>Workflow Numéro 2</b>
+				<ul>
+					<li><span class='option'>MAFFT</span> pour l'alignement multiple</li>
+					<li><span class='option'>BMGE</span> pour la curation</li>
+					<li><span class='option'>FastME avec 100 bootstrap </span>  pour la construction de l'arbre</li>
+					<li><span class='option'>Newick Display</span> pour la manipulation de l'arbre</li>
+				<div class="tips">
+				    Si les analyses sont trop lentes	vous pouvez utiliser le lien suivant pour accéder à une copie 
+					de secours des résultats : <a target="_blank" href="https://ngphylogeny.fr/workspace/history/ff348530b2eb4d45">Page de Résultats de Workflow 2</a>
+				</div>
+				</ul>
+			</li>
+			<li><b>Workflow Numéro 3</b>
+				<ul>
+					<li><span class='option'>MAFFT</span> pour l'alignement multiple</li>
+					<li><span class='option'>BMGE</span> pour la curation</li>
+					<li><span class='option'>PhyML-SMS</span> pour la construction de l'arbre</li>
+					<li><span class='option'>Newick Display</span> pour la manipulation de l'arbre</li>
+				<div class="tips">
+				    Si les analyses sont trop lentes	vous pouvez utiliser le lien suivant pour accéder à une copie 
+					de secours des résultats : <a target="_blank" href="https://ngphylogeny.fr/workspace/history/c48ffbfb963c1d35">Page de Résultats de Workflow 3</a>
+				</div>
+				</ul>			
+			</li>
+		</ul>
+	</li>
+	
+	<li>Appelons 
+	<ul>
+		<li><span class='option'>Arbre 1 (MAFFT, Gblocks, FastME)</span> (l’arbre originalement créé )</li>
+		<li><span class='option'>Arbre2 créé par le Workflow 2 (MAFFT, BMGE, FastME)</span></li>
+		<li><span class='option'>Arbre 3 créé par le Workflow 3 (MAFFT, BMGE, PhyML+SMS)</span>.</li>
+	</ul></li>
+</li>
+    </ol>
+	
+	<div class='exo'>
+	<h3>Questionnaire 6 – Comparaison des arbres</h3>	
+	<ol>	
+		<li><p>La position des groupes de monotrèmes, marsupiaux et Euthérien 
+		dans la branche des opsines bleues reflète la phylogénie dans</p>
+		<ul>
+			<li>Arbre 1</li>
+			<li>Arbre 2</li>
+			<li>Arbre 3</li>
+		</ul>
+		</li>
+		<li><p>La position des monotrèmes, marsupiaux et Euthériens dans la 
+		branche des opsines vert-rouge reflète la phylogénie dans</p>
+				<ul>
+			<li>Arbre 1</li>
+			<li>Arbre 2</li>
+			<li>Arbre 3</li>
+		</ul>
+		</li>
+		<li><p>La branche des opsines vertes et rouges reflète correctement la relation de parenté
+		des primates au sein des Boreoeutheria dans</p>
+		<ul>
+			<li>Arbre 1</li>
+			<li>Arbre 2</li>
+			<li>Arbre 3</li>
+		</ul>
+		</li>
+		
+		<li><p>Les positions relatives des opsines vertes et rouges des primates indiquent correctement 
+		la position de la duplication dans</p>
+		<ul>
+			<li>Arbre 1</li>
+			<li>Arbre 2</li>
+			<li>Arbre 3</li>
+		</ul>
+		</li>
+	</ol>
+	</div>
+	
+    </div>
+	</div>
+    
 
 	
 	    <a name='tree_of_life'></a>
